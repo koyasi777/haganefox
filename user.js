@@ -191,6 +191,26 @@ user_pref("network.connectivity-service.enabled", false);
  *   この設定を有効にしない方が安全です（falseにせず、Googleチェックを許可する） ***/
 user_pref("browser.safebrowsing.downloads.remote.enabled", false);
 
+/* 0404: 望ましくないソフトウェアに対するSafe Browsingチェックを無効化（任意）
+ * - 「望ましくないソフトウェア」や「一般的でないソフトウェア」のダウンロード時に、
+ *   Firefoxが警告を表示する機能を制御します
+ * - デフォルトでは有効（true）で、ユーザーの安全のために警告されます
+ * - [SETTING] 設定画面：プライバシーとセキュリティ > セキュリティ >
+ *   「望ましくないおよび一般的でないソフトウェアについて警告する」
+ * - プライバシー重視でGoogleとの連携を減らしたい場合や、警告表示を無効にしたい
+ *   上級ユーザー向けのオプションです（基本的にはコメントアウトのままが無難） ***/
+// user_pref("browser.safebrowsing.downloads.remote.block_potentially_unwanted", false);
+// user_pref("browser.safebrowsing.downloads.remote.block_uncommon", false);
+
+/* 0405: Safe Browsing 警告画面での「この警告を無視する」ボタンを無効化
+ * - フィッシングやマルウェアサイトなど、SBによる警告画面が表示された際に、
+ *   ユーザーが「警告を無視して続行」を選べる機能を無効化します
+ * - 管理者がSBブロックを**強制**したい場合に有効です（教育用途・企業用途など）
+ * - [TEST] 動作確認用のテストURLあり（Appendix-A-Test-Sites）
+ * - [1] https://bugzilla.mozilla.org/1226490
+ * - 通常の個人ユーザーには不要であり、コメントアウトのままが一般的です ***/
+// user_pref("browser.safebrowsing.allowOverride", false);
+
 
 
 /*** [SECTION 0600]: 明示的でない外部通信のブロック（ユーザーがクリック等していない） ***/
