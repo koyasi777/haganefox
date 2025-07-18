@@ -11,7 +11,7 @@
 
 鋼は、ただ硬いだけではありません。強さと同時に、加工できる「しなやかさ」を併せ持ち、実用的な道具の素材として最適です。この設定は、その思想を体現しています。
 
-* **鋼の「硬さ」(Hardness):** [arkenfox user.js](https://github.com/arkenfox/user.js) の思想を継承した、妥協のないセキュリティとプライバシーの堅牢化。
+* **鋼の「硬さ」(Hardness):** [arkenfox](https://github.com/arkenfox/user.js) の思想を継承した、妥協のないセキュリティとプライバシーの堅牢化。
 * **鋼の「しなやかさ」(Flexibility):** [Betterfox](https://github.com/yokoffing/Betterfox) のようなプロジェクトから着想を得た、応答性と体感速度を高めるパフォーマンスチューニングと、日常的な利便性を損なわない実用的な判断。
 
 `Haganefox` は、ただ守りを固めるだけでなく、日々のブラウジング体験を鋭く、快適にすることも目的としています。
