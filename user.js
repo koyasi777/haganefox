@@ -592,10 +592,12 @@ user_pref("privacy.userContext.ui.enabled", true);
  * [設定] 一般 > タブ > コンテナタブ > 設定 > 新しいタブにコンテナを選択 ***/
    // user_pref("privacy.userContext.newTabContainerOnLeftClick.enabled", true);
 
-/* 1703: 外部リンクをサイトごとに決めたコンテナで開くようにする [FF123+]
- * [SETUP-WEB] コンテナ拡張の設定に依存
- * true = Firefoxはコンテナを選ばず、拡張が制御可能
- * false = Firefoxが（非）コンテナを選択（デフォルト） ***/
+/* 1703: 外部リンクをサイトごとのコンテナで開くように設定 [FF123+]
+ * - [SETUP-WEB] 使用しているコンテナ拡張機能とその設定に応じて挙動が変わります
+ * - true：Firefox自身はコンテナを選択せず、拡張機能がコンテナ制御できるようになります
+ * - false（デフォルト）：Firefoxが自動的にコンテナ／非コンテナを選択します
+ * - 外部リンク（例：他アプリからのURLオープン）を常にコンテナ制御下で開きたい場合に有効
+ * [1] https://bugzilla.mozilla.org/1874599 ***/
    // user_pref("browser.link.force_default_user_context_id_for_external_opens", true);
 
 
