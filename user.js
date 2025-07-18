@@ -262,8 +262,9 @@ user_pref("network.file.disable_unc_paths", true); // [隠し設定]
  * [3] https://en.wikipedia.org/wiki/GIO_(software) ***/
 user_pref("network.gio.supported-protocols", ""); // [隠し設定] [デフォルト: ""]
 
-/* 0705: システムリクエストのプロキシ失敗時に直アクセスにフォールバックするのを無効化 [FF91+]
- * [警告] デフォルトのtrueは悪意ある拡張からの保護機能。使い方に応じて判断
+/* 0705: システムリクエストでプロキシ失敗時の直接接続（フォールバック）を無効化 [FF91+]
+ * [警告] デフォルト値（true）は悪意のある拡張機能に対するセキュリティ機能
+ * [SETUP-CHROME] プロキシを使用しており、拡張機能を信頼できる場合のみ変更を検討
  * [1] https://blog.mozilla.org/security/2021/10/25/securing-the-proxy-api-for-firefox-add-ons/ ***/
    // user_pref("network.proxy.failover_direct", false);
 
