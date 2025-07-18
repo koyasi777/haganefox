@@ -125,6 +125,7 @@ user_pref("browser.newtabpage.activity-stream.telemetry", false);
 /* 0340: スタディ機能を無効化
  * [設定] プライバシーとセキュリティ>Firefoxのデータ収集と利用>スタディを実行 ***/
 user_pref("app.shield.optoutstudies.enabled", false);
+
 /* 0341: Normandy/Shield を無効化 [FF60+]
  * Shieldはレシピ配信とテストのためのテレメトリシステム
  * [1] https://mozilla.github.io/normandy/ ***/
