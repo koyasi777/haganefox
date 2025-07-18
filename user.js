@@ -427,9 +427,12 @@ user_pref("browser.sessionstore.privacy_level", 2);
  * [1] https://bugzilla.mozilla.org/603903 ***/
 // user_pref("toolkit.winRegisterApplicationRestart", false);
 
-/* 1006: ショートカットにファビコン（favicon）を保存しない [WINDOWS]
- * URLショートカットにはランダムな名前の .ico ファイルが保存される（profile/shortcutCache 内）
- * ショートカットを削除しても .ico ファイルは残る。false に設定すると汎用Firefoxアイコンになる ***/
+/* 1006: ショートカットのファビコン表示を無効化 [WINDOWS]
+ * - URLショートカット作成時、Firefoxはキャッシュされたランダム名の .ico ファイルを
+ *   プロファイル内の shortcutCache ディレクトリに保存します
+ * - この .ico ファイルは、ショートカットを削除してもそのまま残ります
+ * - この設定を false にすると、すべてのショートカットで Firefox の汎用アイコンが使用され、
+ *   個別のファビコンは保存・使用されません ***/
 // user_pref("browser.shell.shortcutFavicons", false);
 
 
