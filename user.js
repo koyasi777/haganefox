@@ -242,8 +242,9 @@ user_pref("browser.places.speculativeConnect.enabled", false);
 
 /*** [SECTION 0700]: DNS / DoH / プロキシ / SOCKS ***/
 
-/* 0702: SOCKS 使用時にプロキシ側でDNS解決を行う
- * 例: Tor使用時、ローカルDNSサーバーにTorの行き先を知られないようにする
+/* 0702: SOCKS プロキシ使用時に、DNSルックアップもプロキシ経由で行うよう設定
+ * 例: Tor 使用時に、ローカルDNSサーバーにTor接続先を知られないようにするため
+ * DNSリクエストはリモートのTorノードが処理する
  * [1] https://trac.torproject.org/projects/tor/wiki/doc/TorifyHOWTO/WebBrowsers ***/
 user_pref("network.proxy.socks_remote_dns", true);
 
