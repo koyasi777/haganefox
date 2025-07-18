@@ -5,8 +5,8 @@
  *****************************************************************************************
  *
  * [ Project ]    Haganefox
- * [ Version ]    1.0.1
- * [ Updated ]    2025-07-18
+ * [ Version ]    1.1.0
+ * [ Updated ]    2025-07-19
  * [ Repository ] https://github.com/koyasi777/haganefox
  * [ License ]    MIT License
  *
