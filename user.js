@@ -1484,11 +1484,6 @@ user_pref("toolkit.telemetry.coverage.opt-out", true); // [HIDDEN PREF]
 user_pref("toolkit.coverage.opt-out", true); // [FF64+] [HIDDEN PREF]
 user_pref("toolkit.coverage.endpoint.base", "");
 
-// DoH確認時のテレメトリ送信を無効化
-// - FirefoxはDoH接続前に確認リクエストを送信し、その結果をMozillaに送る（network確認テレメトリ）
-// - プライバシー重視ならこれを無効にしても実害なし。DoHの動作には影響しない。
-user_pref("network.trr.confirmation_telemetry_enabled", false);
-
 
 
 /*** [SECTION 9000]: NON-PROJECT RELATED（Arkenfoxとは無関係な快適設定） ***/
@@ -1626,3 +1621,9 @@ user_pref("signon.autofillForms.http", false);
  * 【補足】Firefox 94+ 以降はデフォルトで true。明示することで構成意図を明確化。
  */
 user_pref("fission.autostart", true);
+
+/* [Security] DoH確認時のテレメトリ送信を無効化
+ * - FirefoxはDoH接続前に確認リクエストを送信し、その結果をMozillaに送る（ネットワーク確認テレメトリ）
+ * - プライバシー重視構成ではこの送信をブロックしても実害はない
+ * - DoHの機能そのものには影響しないため、安全に無効化可能 ***/
+user_pref("network.trr.confirmation_telemetry_enabled", false);
