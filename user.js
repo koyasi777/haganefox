@@ -268,9 +268,10 @@ user_pref("network.gio.supported-protocols", ""); // [隠し設定] [デフォ�
  * [1] https://blog.mozilla.org/security/2021/10/25/securing-the-proxy-api-for-firefox-add-ons/ ***/
    // user_pref("network.proxy.failover_direct", false);
 
-/* 0706: システムリクエストのプロキシバイパスを無効化 [FF95+]
- * RemoteSettings, UpdateService, Telemetryなどが対象
- * [警告] falseにすると、一部セキュリティ機能のフォールバックが壊れる可能性あり
+/* 0706: システムリクエスト失敗時のプロキシバイパスを無効化 [FF95+]
+ * 対象: RemoteSettings、UpdateService、Telemetry など [1]
+ * [警告] false にすると一部のセキュリティ機能のフォールバックが動作しなくなる可能性あり
+ * [SETUP-CHROME] プロキシを使用しており、セキュリティへの影響を理解している場合のみ使用
  * [1] https://bugzilla.mozilla.org/buglist.cgi?bug_id=1732792,1733994,1733481 ***/
    // user_pref("network.proxy.allow_bypass", false);
 
