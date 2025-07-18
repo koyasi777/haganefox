@@ -17,7 +17,7 @@
  * Your Firefox, forged into steel.
  *
  * This user.js aims for a practical balance between the robust security and privacy of
- * projects like Arkenfox, and the sharp performance and usability from projects like
+ * projects like arkenfox, and the sharp performance and usability from projects like
  * Betterfox. It is designed to be a strong, resilient, and practical tool for daily
  * Browse by developers and power users.
  *
