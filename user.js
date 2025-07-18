@@ -72,8 +72,8 @@ user_pref("browser.newtabpage.enabled", false);
 
 /* 0105: Firefoxホーム（アクティビティストリーム）のスポンサーコンテンツを無効化
  * [設定] ホーム>Firefoxホームコンテンツ ***/
-user_pref("browser.newtabpage.activity-stream.showSponsored", false);
-user_pref("browser.newtabpage.activity-stream.showSponsoredTopSites", false);
+user_pref("browser.newtabpage.activity-stream.showSponsored", false); // [FF58+]
+user_pref("browser.newtabpage.activity-stream.showSponsoredTopSites", false); // [FF83+] ショートカット > スポンサー付きショートカットの表示を無効にする
 
 /* 0106: デフォルトのトップサイトをクリア
  * [注] ユーザーが手動で追加することは可能 ***/
