@@ -711,7 +711,7 @@ user_pref("browser.download.manager.addToRecentDocs", false);
 
 /* 2654: 新しいMIMEタイプのファイル処理時に常に確認を求める（セキュリティ強化） [FF101+]
  * [設定] 一般 > ファイルとアプリケーション > その他のファイルの扱い方法 ***/
-user_pref("browser.download.always_ask_before_handling_new_types", true); // [FF101+]
+user_pref("browser.download.always_ask_before_handling_new_types", true);
 
 
 /** EXTENSIONS（拡張機能） **/
@@ -744,7 +744,7 @@ user_pref("extensions.postDownloadThirdPartyPrompt", false);
  * [1] https://blog.mozilla.org/security/2021/02/23/total-cookie-protection/
  * [設定] サイト例外を追加: アドレスバー > ETP シールド
  * [設定] 例外を管理: オプション > プライバシーとセキュリティ > 強化型トラッキング防止 > 例外を管理 ***/
-user_pref("browser.contentblocking.category", "strict");
+user_pref("browser.contentblocking.category", "strict"); // [隠し設定]
 
 /* 2702: ETP の Web 互換機能（SmartBlock等）を無効化 [FF93+]
  * [SETUP-HARDEN] スキップリスト、ヒューリスティック（SmartBlock）、自動許可機能を含む
@@ -768,12 +768,12 @@ user_pref("browser.contentblocking.category", "strict");
 user_pref("privacy.sanitize.sanitizeOnShutdown", false); // 起動時に前回のセッションを復元したいのでfalseに（履歴を保持）
 
 /* 2811: 終了時に削除する項目（2810 が true の場合）を設定・強制 [SETUP-CHROME] [FF128+] ***/
-user_pref("privacy.clearOnShutdown_v2.cache", true);                        // キャッシュ
-user_pref("privacy.clearOnShutdown_v2.historyFormDataAndDownloads", true); // 履歴・フォームデータ・DL履歴
+user_pref("privacy.clearOnShutdown_v2.cache", true);                        // キャッシュ [デフォルト: true]
+user_pref("privacy.clearOnShutdown_v2.historyFormDataAndDownloads", true); // 履歴・フォームデータ・DL履歴 [デフォルト: true]
    // user_pref("privacy.clearOnShutdown_v2.siteSettings", false);         // サイト設定 [デフォルト: false]
 
 /* 2812: 上記の項目を分割して個別設定 [FF136+] ***/
-user_pref("privacy.clearOnShutdown_v2.browsingHistoryAndDownloads", true); // 閲覧履歴・DL履歴
+user_pref("privacy.clearOnShutdown_v2.browsingHistoryAndDownloads", true); // 閲覧履歴・DL履歴 [デフォルト: true]
 user_pref("privacy.clearOnShutdown_v2.downloads", true);                   // ダウンロード履歴
 user_pref("privacy.clearOnShutdown_v2.formdata", true);                    // フォーム入力データ
 
@@ -781,6 +781,9 @@ user_pref("privacy.clearOnShutdown_v2.formdata", true);                    // �
  * [注] 0102で復元機能を無効にしている、または2811+ですでに履歴を削除していれば不要
  * [注] trueにするとクラッシュからの自動復元も行われなくなる（5008参照） ***/
    // user_pref("privacy.clearOnShutdown.openWindows", true);
+
+
+/** シャットダウン時のデータ消去：サイトごとの「許可」例外設定を尊重する ***/
 
 /* 2815: Cookie と サイトデータを終了時に削除（2810 が true の場合） [SETUP-CHROME] [FF128+]
  * [注] クロスドメインログインが必要な場合は、関連する両ドメインに例外を追加
@@ -790,6 +793,9 @@ user_pref("privacy.clearOnShutdown_v2.formdata", true);                    // �
  * [設定] 例外管理: オプション > プライバシーとセキュリティ > 権限 > 設定
  * [NOTE] これを `false` にすることで、ログイン状態が維持されます。 ***/
 user_pref("privacy.clearOnShutdown_v2.cookiesAndStorage", false);
+
+
+/** サイトデータの消去：サイトごとの「許可」例外設定を無視する ***/
 
 /* 2820: 手動「データを消去」で削除する項目 [SETUP-CHROME] [FF128+]
  * Firefoxは直前の選択を記憶する。この設定で毎回リセット可能
@@ -803,6 +809,9 @@ user_pref("privacy.clearSiteData.historyFormDataAndDownloads", true);      // �
 user_pref("privacy.clearSiteData.browsingHistoryAndDownloads", true);
 user_pref("privacy.clearSiteData.formdata", true);
 
+
+/** 閲覧履歴の消去：サイトごとの「許可」例外設定を無視する ***/
+
 /* 2830: 手動「履歴を消去」で削除する項目 [SETUP-CHROME] [FF128+]
  * Firefoxは直前の選択を記憶する。この設定で毎回リセット可能
  * [設定] プライバシーとセキュリティ > 履歴 > 履歴を消去 ***/
@@ -812,12 +821,19 @@ user_pref("privacy.clearHistory.historyFormDataAndDownloads", true);       // �
    // user_pref("privacy.clearHistory.siteSettings", false);              // サイト設定 [デフォルト: false]
 
 /* 2831: 上記をさらに細分化して設定 [FF136+] ***/
-user_pref("privacy.clearHistory.browsingHistoryAndDownloads", true);
+user_pref("privacy.clearHistory.browsingHistoryAndDownloads", true); // [デフォルト: true]
 user_pref("privacy.clearHistory.formdata", true);
 
-/* 2840: 「データを消去」「履歴を消去」で使う期間を指定（起動時に毎回リセット）
- * 0=すべて, 1=直近1時間, 2=直近2時間, 3=直近4時間, 4=本日分
- * [注] 値 5（直近5分）と 6（直近24時間）はUIに表示されず、動作保証されない可能性あり ***/
+
+/** 手動消去時の設定：タイムレンジ（期間選択） ***/
+
+/* 2840: 「データを消去」（2820+）や「履歴を消去」（2830+）での
+ * 「消去する期間（Time range to clear）」の初期値を設定する
+ * - Firefox は前回選択した期間を記憶するが、この設定で起動時に値をリセット可能
+ * - 値の意味:
+ *   0 = すべて、1 = 過去1時間、2 = 過去2時間、3 = 過去4時間、4 = 今日
+ * [注意] 値 5（過去5分）および 6（過去24時間）はドロップダウンには表示されず、
+ *   ブランク（空白）になり、動作も保証されていません ***/
 user_pref("privacy.sanitize.timeSpan", 0); // すべて削除
 
 
