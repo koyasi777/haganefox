@@ -151,6 +151,7 @@ user_pref("browser.crashReports.unsubmittedCheck.autoSubmit2", false); // [デ�
  * [1] https://www.eff.org/deeplinks/2017/08/how-captive-portals-interfere-wireless-security-and-privacy ***/
 user_pref("captivedetect.canonicalURL", "");
 user_pref("network.captive-portal-service.enabled", false); // [FF52+]
+
 /* 0361: ネットワーク接続チェックを無効化 [FF65+]
  * [1] https://bugzilla.mozilla.org/1460537 ***/
 user_pref("network.connectivity-service.enabled", false);
