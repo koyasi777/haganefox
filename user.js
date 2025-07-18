@@ -446,6 +446,7 @@ user_pref("browser.sessionstore.privacy_level", 2);
    [1] https://www.securityartwork.es/2017/02/02/tls-client-fingerprinting-with-bro/
 ***/
 
+
 /*** SSL (Secure Sockets Layer) / TLS (Transport Layer Security) ***/
 
 /* 1201: 安全なネゴシエーション（RFC 5746）を必須にする
@@ -465,12 +466,15 @@ user_pref("browser.sessionstore.privacy_level", 2);
  * [4] https://www.ssllabs.com/ssl-pulse/ ***/
 user_pref("security.ssl.require_safe_negotiation", true);
 
-/* 1206: TLS 1.3 の 0-RTT（往復ゼロ回）データを無効化 [FF51+]
- * PSK（事前共有鍵）のみによる暗号化で前方秘匿性がない。再送信攻撃に対して脆弱
+/* 1206: TLS 1.3 の 0-RTT（ゼロ・ラウンドトリップ）を無効化 [FF51+]
+ * - 0-RTT データは forward secrecy（前方秘匿性）を持ちません。
+ *   なぜなら、これは提供された PSK（事前共有鍵）から導出された鍵のみで暗号化されるためです
+ * - 接続間でのリプレイ防止が保証されない点も問題です
  * [1] https://github.com/tlswg/tls13-spec/issues/1001
  * [2] https://www.rfc-editor.org/rfc/rfc9001.html#name-replay-attacks-with-0-rtt
  * [3] https://blog.cloudflare.com/tls-1-3-overview-and-q-and-a/ ***/
 user_pref("security.tls.enable_0rtt_data", false);
+
 
 /** OCSP（オンライン証明書ステータスプロトコル）
  * [1] https://scotthelme.co.uk/revocation-is-broken/
@@ -486,7 +490,7 @@ user_pref("security.tls.enable_0rtt_data", false);
  * [1] https://en.wikipedia.org/wiki/Ocsp ***/
 user_pref("security.OCSP.enabled", 1); // [デフォルト: 1]
 
-/* 1212: OCSPフェッチ失敗時に接続を強制終了（ハードフェイル）にする
+/* 1212: OCSPフェッチ失敗時（ステープルなし）に接続を強制終了（ハードフェイル）にする
  * [SETUP-WEB] エラー例: SEC_ERROR_OCSP_SERVER_ERROR / SEC_ERROR_OCSP_UNAUTHORIZED_REQUEST
  * CAに到達できず検証できない場合、通常は接続継続（ソフトフェイル）
  * → true にすると、代わりに接続を中断（ハードフェイル）
@@ -496,6 +500,7 @@ user_pref("security.OCSP.enabled", 1); // [デフォルト: 1]
  * [2] https://www.imperialviolet.org/2014/04/19/revchecking.html
  * [3] https://letsencrypt.org/2024/12/05/ending-ocsp/ ***/
 user_pref("security.OCSP.require", true);
+
 
 /** CERTS / HPKP（HTTP公開鍵ピンニング） ***/
 
@@ -513,6 +518,7 @@ user_pref("security.cert_pinning.enforcement_level", 2);
  * [2] https://blog.mozilla.org/security/tag/crlite/ ***/
 user_pref("security.remote_settings.crlite_filters.enabled", true); // [デフォルト: true FF137+]
 user_pref("security.pki.crlite_mode", 2);
+
 
 /** MIXED CONTENT（混在コンテンツ） ***/
 
