@@ -1000,8 +1000,8 @@ user_pref("privacy.resistFingerprinting.block_mozAddonManager", true);  // AMO�
  * [1] https://bugzilla.mozilla.org/1407366
  * [2] https://hg.mozilla.org/mozilla-central/rev/7211cb4f58ff#l5.13
  */
-   // user_pref("privacy.resistFingerprinting.letterboxing", true);
-   // user_pref("privacy.resistFingerprinting.letterboxing.dimensions", "");
+   // user_pref("privacy.resistFingerprinting.letterboxing", true); // [隠し設定]
+   // user_pref("privacy.resistFingerprinting.letterboxing.dimensions", ""); // [隠し設定]
 
 /* 4505: ドメイン単位でRFPを無効化 [FF91+]
  * 【注意】有効な例: "arkenfox.github.io", "*github.io"
@@ -1098,10 +1098,10 @@ user_pref("signon.rememberSignons", false);
 
 /* 5008: クラッシュ後のセッション復元を無効化
  * [テスト] about:crashparent
- * 【目的】Firefoxのクラッシュ検知時に、前回のタブを自動復元させない
- * 【理由】他人の操作時や公共端末などで、予期せぬ閲覧内容の露呈を防止
- * 【備考】通常のプライバシーレベルでは有効化が実用的。デフォルトはtrueだが、trueを明示。
- *        セキュリティ・匿名性重視なら false
+ * [目的] Firefoxのクラッシュ検知時に、前回のタブを自動復元させない
+ * [理由] 他人の操作時や公共端末などで、予期せぬ閲覧内容の露呈を防止
+ * [CUSTOM] 通常のプライバシーレベルでは有効化が実用的。デフォルトはtrueだが、trueを明示。
+ *          セキュリティ・匿名性重視なら false
  */
 user_pref("browser.sessionstore.resume_from_crash", true);
 
@@ -1153,8 +1153,8 @@ user_pref("browser.sessionstore.resume_from_crash", true);
  * 【設定】設定 > プライバシーとセキュリティ > フォームとオートフィル > 住所を自動入力
  * [1] https://wiki.mozilla.org/Firefox/Features/Form_Autofill
  */
-   // user_pref("extensions.formautofill.addresses.enabled", false);
-   // user_pref("extensions.formautofill.creditCards.enabled", false);
+   // user_pref("extensions.formautofill.addresses.enabled", false); // [FF55+]
+   // user_pref("extensions.formautofill.creditCards.enabled", false); // [FF56+]
 
 /* 5018: ポップアップ発生を許可するイベントを制限 */
    // user_pref("dom.popup_allowed_events", "click dblclick mousedown pointerdown");
@@ -1210,7 +1210,7 @@ user_pref("browser.sessionstore.resume_from_crash", true);
  */
 // user_pref("javascript.options.ion", false);
 // user_pref("javascript.options.baselinejit", false);
-// user_pref("javascript.options.jit_trustedprincipals", true); // [FF75+] [HIDDEN PREF]
+// user_pref("javascript.options.jit_trustedprincipals", true); // [FF75+] [隠し設定]
 
 /* 5506: WebAssembly（WASM）を無効化 [FF52+]
  * WASMはネイティブに近い低レベルアクセスを持ち、ブルートフォースや既知の脆弱性再現を可能にする
@@ -1253,7 +1253,7 @@ user_pref("browser.sessionstore.resume_from_crash", true);
  * ブートストラップアドレスを正しく設定すれば、システムDNSを回避できる
  * ただし、指定したIPが network.trr.uri のホストと一致しない場合、DoHは機能しない
  */
-// user_pref("network.trr.bootstrapAddr", "10.0.0.1"); // [HIDDEN PREF]
+// user_pref("network.trr.bootstrapAddr", "10.0.0.1"); // [隠し設定]
 
 
 
