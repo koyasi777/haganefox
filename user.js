@@ -183,10 +183,12 @@ user_pref("network.connectivity-service.enabled", false);
  * [設定] プライバシーとセキュリティ > セキュリティ > 危険なダウンロードをブロック ***/
    // user_pref("browser.safebrowsing.downloads.enabled", false);
 
-/* 0403: ダウンロードに対するSBリモートチェックを無効化
- * Firefoxは一部の実行ファイルの安全性を判断するために、その情報（名前・発信元・サイズ・
- * コンテンツのハッシュなど）をGoogleセーフブラウジングサービスに送信する場合がある
- * [SETUP-SECURITY] 理解できない場合やこの保護が必要な場合は、この設定を無効にしないこと ***/
+/* 0403: ダウンロードファイルに対するSafe Browsing（Google）チェックを無効化
+ * - Firefoxは一部の実行可能ファイルの安全性を確認するために、Google Safe Browsingに
+ *   以下の情報（ファイル名・由来URL・サイズ・ハッシュ値など）を送信することがあります
+ * - この情報送信を停止する設定です（= プライバシー保護）
+ * - [SETUP-SECURITY] この動作の意味が不明な場合、あるいは安全性を優先したい場合は
+ *   この設定を有効にしない方が安全です（falseにせず、Googleチェックを許可する） ***/
 user_pref("browser.safebrowsing.downloads.remote.enabled", false);
 
 
