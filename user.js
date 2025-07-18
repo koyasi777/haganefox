@@ -52,6 +52,7 @@
 user_pref("browser.aboutConfig.showWarning", false);
 
 
+
 /*** [SECTION 0100]: 起動関連設定 ***/
 
 /* 0102: 起動時のページ設定 [SETUP-CHROME]
@@ -80,6 +81,7 @@ user_pref("browser.newtabpage.activity-stream.showSponsoredTopSites", false); //
 user_pref("browser.newtabpage.activity-stream.default.sites", "");
 
 
+
 /*** [SECTION 0200]: 位置情報 ***/
 
 /* 0202: OS の位置情報サービスの使用を無効化 ***/
@@ -88,7 +90,11 @@ user_pref("geo.provider.use_corelocation", false); // [MAC]
 user_pref("geo.provider.use_geoclue", false); // [FF102+] [LINUX]
 
 
+
 /*** [SECTION 0300]: 通信の静穏化（Quieter Firefox） ***/
+
+
+/** 推奨機能の無効化 ***/
 
 /* 0320: about:addons でのおすすめペインを無効化（Google Analytics使用） ***/
 user_pref("extensions.getAddons.showPane", false); // [隠し設定]
@@ -105,12 +111,16 @@ user_pref("browser.discovery.enabled", false);
 /* 0323: ショッピング体験機能を無効化 [FF116+] ***/
 user_pref("browser.shopping.experience2023.enabled", false); // [デフォルト: false]
 
+
 /** テレメトリ関連 ***/
+
 /* 0335: Firefoxホーム（アクティビティストリーム）のテレメトリを無効化 ***/
 user_pref("browser.newtabpage.activity-stream.feeds.telemetry", false);
 user_pref("browser.newtabpage.activity-stream.telemetry", false);
 
+
 /** 実験・スタディ ***/
+
 /* 0340: スタディ機能を無効化
  * [設定] プライバシーとセキュリティ>Firefoxのデータ収集と利用>スタディを実行 ***/
 user_pref("app.shield.optoutstudies.enabled", false);
@@ -120,7 +130,9 @@ user_pref("app.shield.optoutstudies.enabled", false);
 user_pref("app.normandy.enabled", false);
 user_pref("app.normandy.api_url", "");
 
+
 /** クラッシュレポート ***/
+
 /* 0350: クラッシュレポートを無効化 ***/
 user_pref("breakpad.reportURL", "");
 user_pref("browser.tabs.crashReporting.sendReport", false); // [FF44+]
@@ -128,7 +140,9 @@ user_pref("browser.tabs.crashReporting.sendReport", false); // [FF44+]
  * [設定] プライバシーとセキュリティ>クラッシュレポートを送信 ***/
 user_pref("browser.crashReports.unsubmittedCheck.autoSubmit2", false); // [デフォルト: false]
 
+
 /** その他 ***/
+
 /* 0360: キャプティブポータル検出を無効化
  * [1] https://www.eff.org/deeplinks/2017/08/how-captive-portals-interfere-wireless-security-and-privacy ***/
 user_pref("captivedetect.canonicalURL", "");
@@ -136,6 +150,7 @@ user_pref("network.captive-portal-service.enabled", false); // [FF52+]
 /* 0361: ネットワーク接続チェックを無効化 [FF65+]
  * [1] https://bugzilla.mozilla.org/1460537 ***/
 user_pref("network.connectivity-service.enabled", false);
+
 
 
 /*** [SECTION 0400]: セーフブラウジング（Safe Browsing）
@@ -170,6 +185,7 @@ user_pref("network.connectivity-service.enabled", false);
 user_pref("browser.safebrowsing.downloads.remote.enabled", false);
 
 
+
 /*** [SECTION 0600]: 明示的でない外部通信のブロック（ユーザーがクリック等していない） ***/
 
 /* 0601: リンクのプリフェッチを無効化
@@ -195,6 +211,7 @@ user_pref("browser.places.speculativeConnect.enabled", false);
 /* 0610: ハイパーリンクオーディティング（クリックトラッキング）を無効化
  * [1] https://www.bleepingcomputer.com/news/software/major-browsers-to-prevent-disabling-of-click-tracking-privacy-risk/ ***/
    // user_pref("browser.send_pings", false); // [デフォルト: false]
+
 
 
 /*** [SECTION 0700]: DNS / DoH / プロキシ / SOCKS ***/
@@ -244,6 +261,8 @@ user_pref("network.gio.supported-protocols", ""); // [隠し設定] [デフォ�
  * [設定] プライバシーとセキュリティ > DNS over HTTPS > カスタムプロバイダ ***/
    // user_pref("network.trr.uri", "https://example.dns");
    // user_pref("network.trr.custom_uri", "https://example.dns");
+
+
 
 /*** [SECTION 0800]: ロケーションバー / 検索バー / サジェスト / 履歴 / フォーム ***/
 /* 0801: ロケーションバーによる推測的な接続（speculative connections）を無効化 [FF56+]
@@ -316,9 +335,11 @@ user_pref("browser.search.separatePrivateDefault", true);         // [FF70+]
 user_pref("browser.search.separatePrivateDefault.ui.enabled", true); // [FF71+]
 
 
+
 /*** [SECTION 0900]: パスワード関連設定
    [1] https://support.mozilla.org/kb/use-primary-password-protect-stored-logins-and-pas
 ***/
+
 /* 0903: ユーザー名とパスワードの自動入力を無効化
  * クロスサイトのフォームで漏洩したり、スプーフィングされる可能性あり
  * [注] 入力フィールドをクリックすれば、保存されたユーザー名とパスワードは利用可能
@@ -347,6 +368,7 @@ user_pref("network.auth.subresource-http-auth-allow", 1);
    // user_pref("network.http.microsoft-entra-sso.enabled", false); // [デフォルト: false]
 
 
+
 /*** [SECTION 1000]: ディスク書き込みの回避 ***/
 /* 1001: ディスクキャッシュを無効化
  * [注] 終了時にキャッシュをクリアする設定（2811+）もあり
@@ -369,6 +391,7 @@ user_pref("browser.sessionstore.privacy_level", 2);
  * URLショートカットにはランダムな名前の .ico ファイルが保存される（profile/shortcutCache 内）
  * ショートカットを削除しても .ico ファイルは残る。false に設定すると汎用Firefoxアイコンになる ***/
 // user_pref("browser.shell.shortcutFavicons", false);
+
 
 
 /*** [SECTION 1200]: HTTPS関連設定（SSL/TLS / OCSP / 証明書 / HPKP）
@@ -478,6 +501,7 @@ user_pref("security.ssl.treat_unsafe_negotiation_as_broken", true);
 user_pref("browser.xul.error_pages.expert_bad_cert", true);
 
 
+
 /*** [SECTION 1600]: リファラ（Referer）設定
    full URI: https://example.com:8888/foo/bar.html?id=1234
    scheme+host+port+path: https://example.com:8888/foo/bar.html
@@ -488,6 +512,7 @@ user_pref("browser.xul.error_pages.expert_bad_cert", true);
 /* 1602: クロスオリジンへのリファラ情報の送信量を制御 [FF52+]
  * 0 = 完全なURI（デフォルト）, 1 = スキーム＋ホスト＋ポート＋パス, 2 = スキーム＋ホスト＋ポート ***/
 user_pref("network.http.referer.XOriginTrimmingPolicy", 2);
+
 
 
 /*** [SECTION 1700]: コンテナ（Container Tabs） ***/
@@ -508,6 +533,7 @@ user_pref("privacy.userContext.ui.enabled", true);
  * true = Firefoxはコンテナを選ばず、拡張が制御可能
  * false = Firefoxが（非）コンテナを選択（デフォルト） ***/
    // user_pref("browser.link.force_default_user_context_id_for_external_opens", true);
+
 
 
 /*** [SECTION 2000]: プラグイン / メディア / WebRTC ***/
@@ -532,10 +558,12 @@ user_pref("media.peerconnection.ice.default_address_only", true);
    // user_pref("media.gmp-provider.enabled", false);
 
 
+
 /*** [SECTION 2400]: DOM（ドキュメントオブジェクトモデル） ***/
 
 /* 2402: スクリプトによるウィンドウの移動・リサイズを禁止 ***/
 user_pref("dom.disable_window_move_resize", true);
+
 
 
 /*** [SECTION 2600]: その他（MISC） ***/
@@ -594,6 +622,7 @@ user_pref("browser.tabs.searchclipboardfor.middleclick", false); // [デフォ�
 user_pref("browser.contentanalysis.enabled", false);       // [FF121+] [デフォルト: false]
 user_pref("browser.contentanalysis.default_result", 0);    // [FF127+] [デフォルト: 0]
 
+
 /** DOWNLOADS（ダウンロード） **/
 
 /* 2651: 毎回保存場所を尋ねる（セキュリティ目的でユーザー操作を要求）
@@ -610,6 +639,7 @@ user_pref("browser.download.manager.addToRecentDocs", false);
 /* 2654: 新しいMIMEタイプのファイル処理時に常に確認を求める（セキュリティ強化） [FF101+]
  * [設定] 一般 > ファイルとアプリケーション > その他のファイルの扱い方法 ***/
 user_pref("browser.download.always_ask_before_handling_new_types", true); // [FF101+]
+
 
 /** EXTENSIONS（拡張機能） **/
 
@@ -628,6 +658,7 @@ user_pref("extensions.postDownloadThirdPartyPrompt", false);
 /* 2662: 特定のMozillaドメインに対する拡張制限を解除（4503も必要） [FF60+]
  * [1] https://bugzilla.mozilla.org/buglist.cgi?bug_id=1384330,1406795,1415644,1453988 ***/
    // user_pref("extensions.webextensions.restrictedDomains", "");
+
 
 
 /*** [SECTION 2700]: ETP（強化型トラッキング防止） ***/
@@ -649,6 +680,7 @@ user_pref("browser.contentblocking.category", "strict");
  * [2] https://hg.mozilla.org/mozilla-central/rev/e5483fd469ab#l4.12
  * [3] https://developer.mozilla.org/docs/Web/Privacy/State_Partitioning#storage_access_heuristics ***/
    // user_pref("privacy.antitracking.enableWebcompat", false);
+
 
 
 /*** [SECTION 2800]: 終了時のデータ削除（サニタイズ） ***/
@@ -716,6 +748,7 @@ user_pref("privacy.clearHistory.formdata", true);
 user_pref("privacy.sanitize.timeSpan", 0); // すべて削除
 
 
+
 /*** [SECTION 4000]: FPP（指紋保護機能）
    RFP（抵抗指紋機能。設定4501）がFPPより優先される
 
@@ -765,6 +798,7 @@ user_pref("privacy.fingerprintingProtection.pbmode", true); // [デフォルト:
  * → 将来的にFPPが外部サーバーの指示で特定サイトに対して緩和されることを防ぐ
  */
 user_pref("privacy.fingerprintingProtection.remoteOverrides.enabled", false);
+
 
 
 /*** [SECTION 4500]: 任意機能：RFP（resistFingerprinting＝指紋取得への抵抗機能）
@@ -838,7 +872,6 @@ user_pref("privacy.fingerprintingProtection.remoteOverrides.enabled", false);
       FF127+ では 2、CSSメディアクエリはズームレベルを devicePixelRatio=1 として偽装
 ***/
 
-
 /* 4501: RFP（指紋取得防止機能）を有効化
  * 【注意】pbmode（プライベートブラウジング用）は true で、
  *          通常モードのRFPがfalseのときに適用される
@@ -851,6 +884,7 @@ user_pref("privacy.fingerprintingProtection.remoteOverrides.enabled", false);
  */
    // user_pref("privacy.resistFingerprinting", true); // [FF41+]
    // user_pref("privacy.resistFingerprinting.pbmode", true); // [FF114+]
+
 
 /* RFP関連のサブセット強化設定（RFP本体をOFFにしても有効） */
 
@@ -920,6 +954,7 @@ user_pref("browser.link.open_newwindow.restriction", 0); // 常にタブで開�
 
 /* 4520: WebGL（Webグラフィックスライブラリ）を無効化 */
    // user_pref("webgl.disabled", true);
+
 
 
 /*** [SECTION 5000]: 任意設定 - OPSEC（運用セキュリティ）
@@ -1133,6 +1168,7 @@ user_pref("browser.sessionstore.resume_from_crash", true);
 // user_pref("network.trr.bootstrapAddr", "10.0.0.1"); // [HIDDEN PREF]
 
 
+
 /*** [SECTION 6000]: 触らないこと（DON'T TOUCH）
    これらはArkenfoxの動作やFirefoxのセキュリティ整合性を保つための重要な設定です。
 ***/
@@ -1199,6 +1235,7 @@ user_pref("extensions.quarantinedDomains.enabled", true); // [DEFAULT: true]
 // user_pref("privacy.cpd.history", "");
 // user_pref("privacy.cpd.offlineApps", "");
 // user_pref("privacy.cpd.sessions", "");
+
 
 
 /*** [SECTION 7000]: DON'T BOTHER（気にしなくていい設定）
@@ -1412,7 +1449,6 @@ user_pref("privacy.trackingprotection.fingerprinting.enabled", true); // [デフ
    [6] https://blog.mozilla.org/en/tag/oblivious-http/
 ***/
 
-
 /* 8500: データ送信を完全に無効化 [FF41+]
  * 【効果】収集ポリシーの表示すら行われず、一切のデータ送信が行われなくなる
  * [1] https://bugzilla.mozilla.org/1195552
@@ -1448,15 +1484,14 @@ user_pref("toolkit.telemetry.coverage.opt-out", true); // [HIDDEN PREF]
 user_pref("toolkit.coverage.opt-out", true); // [FF64+] [HIDDEN PREF]
 user_pref("toolkit.coverage.endpoint.base", "");
 
-
 // DoH確認時のテレメトリ送信を無効化
 // - FirefoxはDoH接続前に確認リクエストを送信し、その結果をMozillaに送る（network確認テレメトリ）
 // - プライバシー重視ならこれを無効にしても実害なし。DoHの動作には影響しない。
 user_pref("network.trr.confirmation_telemetry_enabled", false);
 
 
-/*** [SECTION 9000]: NON-PROJECT RELATED（Arkenfoxとは無関係な快適設定） ***/
 
+/*** [SECTION 9000]: NON-PROJECT RELATED（Arkenfoxとは無関係な快適設定） ***/
 
 /* 9001: Firefox起動時のウェルカム画面を無効化
  * 【効果】アップグレード後の紹介ページなどをスキップ
@@ -1474,6 +1509,7 @@ user_pref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features", 
  * 【設定】設定 > 検索 > アドレスバーを検索とナビゲーションに使用 > URLの代わりに検索語を表示
  */
 user_pref("browser.urlbar.showSearchTerms.enabled", false);
+
 
 
 /*** [SECTION 9999]: DEPRECATED / RENAMED（廃止または名称変更済みの設定） ***/
@@ -1496,6 +1532,7 @@ user_pref("browser.urlbar.showSearchTerms.enabled", false);
  * 実用性・QoL・セキュリティ強化の観点から意図的に追加した設定である。
  * バージョンアップ時の整合性維持のため、他セクションとは明示的に分離する。
  */
+
 
 /* [Betterfoxからの導入] --- Start --- */
 
@@ -1574,6 +1611,7 @@ user_pref("datareporting.usage.uploadEnabled", false);
 // user_pref("geo.provider.network.url", "https://api.beacondb.net/v1/geolocate");
 
 /* [Betterfoxからの導入] --- End --- */
+
 
 /* [その他オリジナル設定項目]  */
 
