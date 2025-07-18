@@ -666,9 +666,11 @@ user_pref("permissions.manager.defaultsUrl", "");
  * [4] https://www.xudongz.com/blog/2017/idn-phishing/ ***/
 user_pref("network.IDN_show_punycode", true);
 
-/* 2620: Firefox内蔵PDFビューア（PDF.js）を強制使用 + スクリプトを無効化
- * → 「Firefoxで表示する」オプションを制御。外部アプリ利用との排他動作。
- * [理由] PDF.jsは軽量・オープンソース・安全（最後の脆弱性は2015年）
+/* 2620: Firefox内蔵PDFビューア（PDF.js）を強制使用し、PDFJS スクリプト実行を無効化
+ * - この設定は、設定画面に表示される「Firefoxで表示」オプションの有効・無効を制御し、
+ *   実質的にPDFをブラウザ内で開くか、外部アプリで開くか（または「毎回確認する」）を決定します
+ * [理由] PDF.jsは軽量・オープンソース・安全:
+ *   - 最後の脆弱性は2015年6月 [1]
  *   - ブラウザ内で完結し、OSや他アプリと共有しない＝状態分離が保たれる
  *   - ディスク書き込みやアプリ間のデータ共有を避けられる
  * [注] ページ側が独自JSでPDFビューを強制することは可能
@@ -681,9 +683,14 @@ user_pref("pdfjs.enableScripting", false);  // [FF86+]
 /* 2624: 新しいタブボタンの中クリックでクリップボード内容から検索・URL開くのを無効化 [FF115+] */
 user_pref("browser.tabs.searchclipboardfor.middleclick", false); // [デフォルト: false（Linux以外）]
 
-/* 2630: DLP（情報漏洩防止）エージェントによるコンテンツ分析を無効化
- * DLPは企業によるローカルアプリ監視（データ持ち出し防止）プロセス。
- * 0=すべてブロック, 1=警告表示（ユーザー判断）, 2=すべて許可
+/* 2630: DLP（情報漏洩防止）エージェントによるコンテンツ解析を無効化
+ * - DLPエージェントは、管理されたPC上でバックグラウンドで動作するプロセスであり、
+ *   ローカルで実行中のアプリケーションを監視し、情報の持ち出し（データ流出）を検知します
+ * - 企業が定義したDLPポリシーに基づき、通信の許可やブロックが可能です
+ * - この設定では Firefox からのコンテンツ解析リクエストの扱いを次の値で制御します:
+ *     0 = すべてのリクエストをブロック
+ *     1 = すべてのリクエストで警告（ユーザーが許可/拒否を選択）
+ *     2 = すべてのリクエストを許可
  * [1] https://github.com/chromium/content_analysis_sdk */
 user_pref("browser.contentanalysis.enabled", false);       // [FF121+] [デフォルト: false]
 user_pref("browser.contentanalysis.default_result", 0);    // [FF127+] [デフォルト: 0]
