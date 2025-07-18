@@ -548,7 +548,11 @@ user_pref("dom.security.https_only_mode_send_http_background_request", false);
 /** UI（ユーザーインターフェース） ***/
 
 /* 1270: 安全でないネゴシエーションに対して錠前アイコンで警告を表示（1201がfalseの場合）
- * [バグ] サブリソースに対しては警告が表示されないことがある
+ * - RFC 5746 に未対応のサーバーと通信する際、アドレスバーの錠前アイコンに警告表示を出します
+ * - これは「安全ではない再ネゴシエーションが行われた可能性」を視覚的に知らせるものです
+ * - [注意] 1201（require_safe_negotiation）が true の場合は接続自体がブロックされるため、
+ *   この設定はその代替手段（視覚的警告）として機能します
+ * - [バグ] サブリソース（iframeや画像など）に対しては警告が表示されないことがあります
  * [1] https://wiki.mozilla.org/Security:Renegotiation
  * [2] https://bugzilla.mozilla.org/1353705 ***/
 user_pref("security.ssl.treat_unsafe_negotiation_as_broken", true);
