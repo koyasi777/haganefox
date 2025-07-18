@@ -1521,6 +1521,7 @@ user_pref("privacy.trackingprotection.fingerprinting.enabled", true); // [デフ
    // user_pref("webgl.enable-debug-renderer-info", "");
 
 
+
 /*** [SECTION 8500]: TELEMETRY（テレメトリ収集の無効化）
    Arkenfoxは、Firefoxのテレメトリ（統計情報収集）をプライバシーやセキュリティの懸念とは見なしていない。
    ただし、多くのユーザーがこれを無効化したいと望んでいるため、初期設定で無効にしている。
@@ -1577,8 +1578,8 @@ user_pref("toolkit.telemetry.firstShutdownPing.enabled", false); // [FF57+]
 /* 8503: Telemetry Coverage（データ網羅率）測定機能を無効化
  * [1] https://blog.mozilla.org/data/2018/08/20/effectively-measuring-search-in-firefox/
  */
-user_pref("toolkit.telemetry.coverage.opt-out", true); // [HIDDEN PREF]
-user_pref("toolkit.coverage.opt-out", true); // [FF64+] [HIDDEN PREF]
+user_pref("toolkit.telemetry.coverage.opt-out", true); // [隠し設定]
+user_pref("toolkit.coverage.opt-out", true); // [FF64+] [隠し設定]
 user_pref("toolkit.coverage.endpoint.base", "");
 
 
@@ -1588,7 +1589,7 @@ user_pref("toolkit.coverage.endpoint.base", "");
 /* 9001: Firefox起動時のウェルカム画面を無効化
  * 【効果】アップグレード後の紹介ページなどをスキップ
  */
-user_pref("browser.startup.homepage_override.mstone", "ignore"); // [HIDDEN PREF]
+user_pref("browser.startup.homepage_override.mstone", "ignore"); // [隠し設定]
 
 /* 9002: アドオンや機能のおすすめ通知を無効化 [FF67+]
  * 【設定】設定 > 一般 > ブラウジング > 閲覧中にアドオンや機能をおすすめ
