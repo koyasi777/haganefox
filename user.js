@@ -544,7 +544,9 @@ user_pref("dom.security.https_only_mode", true); // [FF76+]
  * [1] https://bugzilla.mozilla.org/buglist.cgi?bug_id=1642387,1660945 ***/
 user_pref("dom.security.https_only_mode_send_http_background_request", false);
 
+
 /** UI（ユーザーインターフェース） ***/
+
 /* 1270: 安全でないネゴシエーションに対して錠前アイコンで警告を表示（1201がfalseの場合）
  * [バグ] サブリソースに対しては警告が表示されないことがある
  * [1] https://wiki.mozilla.org/Security:Renegotiation
