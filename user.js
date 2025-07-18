@@ -170,11 +170,10 @@ user_pref("network.connectivity-service.enabled", false);
    [4] https://educatedguesswork.org/posts/safe-browsing-privacy/
 ***/
 
-/* 0401: セーフブラウジング（SB）を無効化
- * [警告] 自己責任で行うこと！ これらはマスター設定スイッチ。
- * [設定] プライバシーとセキュリティ > セキュリティ > 危険・詐欺的なコンテンツをブロック 
- * [NOTE] セーフブラウジングは重要なセキュリティ機能です。マスターコントロールは有効のままにします。 
-***/
+/* 0401: Safe Browsing (安全閲覧保護) を無効化
+ * [警告] この設定を変更すると、マルウェアやフィッシングサイトからの保護が無効になります。
+ *        実際に無効化する場合は、リスクを十分に理解した上で自己責任で行ってください。
+ * [設定箇所] プライバシーとセキュリティ > セキュリティ > 危険なサイトや欺瞞的なコンテンツをブロック ***/
    // user_pref("browser.safebrowsing.malware.enabled", false);
    // user_pref("browser.safebrowsing.phishing.enabled", false);
 
