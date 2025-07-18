@@ -352,10 +352,13 @@ user_pref("browser.formfill.enable", false);
  * [設定] 検索 > アドレスバー > 使用時の提案 > 検索エンジン ***/
    // user_pref("browser.urlbar.suggest.engines", false);
 
-/* 0820: 訪問済みリンクの色を無効化
- * [SETUP-HARDEN] 高速な履歴スニッフィング攻撃は2010年に対策済 [1][2]、
- * 高度なリドロータイミング攻撃はFF77+で対策 [3]、RFP（4501）使用で更に対策可能
- * ただし、ソーシャルエンジニアリングや高度なターゲット攻撃は依然として有効な場合あり
+/* 0820: 訪問済みリンクの色分けを無効化
+ * [SETUP-HARDEN] 高速な履歴スニッフィング攻撃（訪問履歴の大量取得）は2010年に対策済 [1][2]、
+ * FF77+では描画タイミングを利用した遅い攻撃も大幅に緩和された [3]
+ * RFP（4501）を併用すれば、タイミング攻撃はさらに困難に
+ * 終了時に履歴を自動削除する設定（2811以降）も併用すると効果的
+ * ただし、ソーシャルエンジニアリング手法 [2#limits][4][5] や、
+ * 高度な標的型タイミング攻撃は依然として一定の成功率を持つ可能性あり
  * [1] https://developer.mozilla.org/docs/Web/CSS/Privacy_and_the_:visited_selector
  * [2] https://dbaron.org/mozilla/visited-privacy
  * [3] https://bugzilla.mozilla.org/1632765
