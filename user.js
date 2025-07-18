@@ -553,9 +553,11 @@ user_pref("dom.security.https_only_mode_send_http_background_request", false);
  * [2] https://bugzilla.mozilla.org/1353705 ***/
 user_pref("security.ssl.treat_unsafe_negotiation_as_broken", true);
 
-/* 1272: セキュリティ警告ページで「詳細情報」を表示
- * 例外追加が可能な場合のみ有効。HSTS関連の不一致では表示されない。
- * [テスト] https://expired.badssl.com/ ***/
+/* 1272: セキュリティ警告ページに高度な技術情報を表示する
+ * - 「安全でない接続」警告ページで、詳細な証明書エラー情報を表示できるようにします
+ * - 例外追加が可能なケースでのみ有効です（例: 証明書期限切れなど）
+ * - HSTSの不一致（例: https://subdomain.preloaded-hsts.badssl.com/）では無効です
+ * - [TEST] https://expired.badssl.com/ ***/
 user_pref("browser.xul.error_pages.expert_bad_cert", true);
 
 
