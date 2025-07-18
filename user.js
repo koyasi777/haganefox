@@ -1326,25 +1326,24 @@ user_pref("extensions.quarantinedDomains.enabled", true); // [デフォルト: t
 
 
 
-/*** [SECTION 7000]: DON'T BOTHER（気にしなくていい設定）
-   これらは変更しても実質的な効果が乏しく、指紋取得回避にも影響が小さい。
-   破損や互換性問題のリスクもあるため、基本的にはいじる必要なし。
-***/
+/*** [SECTION 7000]: DON'T BOTHER（気にしなくていい設定）***/
 
-/* 7001: APIの無効化
- * 位置情報API、フルスクリーンAPIなど
- * 【理由】APIの有効・無効状態も指紋情報となりうるため。ただし、いずれもユーザー操作が前提
- */
+/* 7001: 各種APIを無効化
+ * - 対象：位置情報API（Location-Aware Browsing）、全画面表示API（Full Screen API）
+ * - [WHY] これらのAPIの状態（有効／無効）は簡単にフィンガープリント要素として利用されうる
+ * - なお、位置情報はプロンプト経由で制御可能（7002）、全画面はユーザー操作が必要 ***/
 // user_pref("geo.enabled", false);
 // user_pref("full-screen-api.enabled", false);
 
-/* 7002: 権限のデフォルト値を設定
- * 位置情報、カメラ、マイク、通知、VR（仮想現実）
- * 0=常に確認（デフォルト）、1=許可、2=ブロック
- * 【理由】Permissions APIで読み取れるため指紋になりうる
- * 【補足】頻繁に使う・邪魔なサイトには個別に許可／拒否を設定すべき
- * 【設定場所】Ctrl+I → 権限／または 設定 > プライバシーとセキュリティ > 権限 > 設定
- */
+/* 7002: 各種デフォルト権限の設定
+ * - 対象: 位置情報、カメラ、マイク、通知 [FF58+]、仮想現実（VR）[FF73+]
+ * - 値の意味: 0 = 常に確認（デフォルト）、1 = 常に許可、2 = 常にブロック
+ * - [WHY] Permissions API により、VR を除きこれらの権限状態はフィンガープリントに利用され得る
+ *   頻繁に使う／煩わしいサイトに対しては、グローバル設定ではなくサイト単位で
+ *   「許可／ブロック」の例外を追加する運用が推奨される
+ * - [SETTING] サイト例外を追加するには：Ctrl+I > 権限（Permissions）
+ * - [SETTING] 既存の例外を管理するには：
+ *   オプション > プライバシーとセキュリティ > 権限 > 設定 ***/
 // user_pref("permissions.default.geo", 0);
 // user_pref("permissions.default.camera", 0);
 // user_pref("permissions.default.microphone", 0);
@@ -1352,7 +1351,7 @@ user_pref("extensions.quarantinedDomains.enabled", true); // [デフォルト: t
 // user_pref("permissions.default.xr", 0); // 仮想現実
 
 /* 7003: 非モダンな暗号スイートを無効化
- * 【理由】受動的指紋取得対策。ただしダウングレード攻撃の脅威はほぼ皆無
+ * - [WHY] 受動的指紋取得対策。ただしダウングレード攻撃の脅威はほぼ皆無
  * [1] https://browserleaks.com/ssl
  */
 // user_pref("security.ssl3.ecdhe_ecdsa_aes_128_sha", false);
@@ -1365,68 +1364,77 @@ user_pref("extensions.quarantinedDomains.enabled", true); // [デフォルト: t
 // user_pref("security.ssl3.rsa_aes_256_sha", false); // PFSなし
 
 /* 7004: TLSのバージョン制御
- * 【理由】セキュリティと受動的指紋回避のため
- * 【補足】ArkenfoxではデフォルトのTLS 1.2（min=3）で十分なセキュリティと互換性を確保できるため、変更不要。
+ * - [WHY] セキュリティと受動的指紋回避のため
+ * - [NOTE] ArkenfoxではデフォルトのTLS 1.2（min=3）で十分なセキュリティと互換性を確保できるため、変更不要。
  *         TLS 1.3のみ許可しても指紋的には逆に目立ちやすく、メリットよりデメリットが大きい。
  */
 // user_pref("security.tls.version.min", 3); // [デフォルト: 3]
 // user_pref("security.tls.version.max", 4);
 
 /* 7005: SSLセッションIDを無効化 [FF36+]
- * 【理由】指紋対策およびパフォーマンス改善（隔離もされている）
- */
+ * - [WHY] 受動的フィンガープリントの材料となるほか、パフォーマンスコストもあるため
+ * - なお、これらのセッションIDはセッション単位であり、
+ *   Firefox 85+ ではネットワークパーティショニングやコンテナ機能により分離される ***/
 // user_pref("security.ssl.disable_session_identifiers", true);
 
-/* 7007: Refererポリシー関連の調整（クロスオリジン以外はあまり意味がない） */
+/* 7007: Referer（リファラ）に関する設定
+ * - [WHY] 本当に重要なのはクロスオリジン間のリファラ挙動（設定 1602, 5510）であり、
+ *   他のリファラ関連設定の影響は限定的 ***/
 // user_pref("network.http.sendRefererHeader", 2);
 // user_pref("network.http.referer.trimmingPolicy", 0);
 
-/* 7008: デフォルトのReferer Policy設定 [FF59+]
- * 0=no-referer, 1=same-origin, 2=strict-origin-when-cross-origin, 3=no-referrer-when-downgrade
- * 【理由】デフォルト値で十分。サイトが独自にポリシーを指定可能
- */
+/* 7008: デフォルトの Referrer Policy を設定 [FF59+]
+ * - 値の意味:
+ *     0 = no-referrer（リファラ送信しない）
+ *     1 = same-origin（同一オリジン間のみリファラ送信）
+ *     2 = strict-origin-when-cross-origin（クロスオリジン時に制限付き送信）
+ *     3 = no-referrer-when-downgrade（安全な接続からのダウングレード時のみ抑制）
+ * - [WHY] デフォルト設定で問題ない。
+ *   なぜならサーバー側が独自に Referrer Policy を定義して上書きできるため ***/
 // user_pref("network.http.referer.defaultPolicy", 2); // [デフォルト: 2]
 // user_pref("network.http.referer.defaultPolicy.pbmode", 2); // [デフォルト: 2]
 
 /* 7010: HTTP Alt-Svc（代替サービス）を無効化 [FF37+]
- * 【理由】既にネットワークパーティショニング（FF85+）で隔離済み
+ * - [WHY] 既にネットワークパーティショニング（FF85+）で隔離済み
  */
 // user_pref("network.http.altsvc.enabled", false);
 
 /* 7011: サイトによる右クリックメニューの制御を無効化
- * 【理由】Shift＋右クリックで回避可能
+ * - [WHY] Shift＋右クリックで回避可能
  */
 // user_pref("dom.event.contextmenu.enabled", false);
 
 /* 7012: アイコンフォント（Webフォント）とローカルフォントのフォールバック描画を無効化
- * 【理由】フォント偽装対策＋RFP互換
+ * - [WHY] フォント偽装対策＋RFP互換
  * [1] https://bugzilla.mozilla.org/789788
  * [2] https://gitlab.torproject.org/legacy/trac/-/issues/8455
  */
 // user_pref("gfx.downloadable_fonts.enabled", false); // [FF41+]
 // user_pref("gfx.downloadable_fonts.fallback_delay", -1);
 
-/* 7013: Clipboard APIを無効化
- * 【理由】指紋リスクあり。ペーストは明示的なユーザー操作時のみ可能
- */
+/* 7013: Clipboard API を無効化
+ * - [WHY] フィンガープリントの材料になり得る。また一部のサイト機能が壊れる可能性あり
+ * - カット／コピー／ペーストはいずれもユーザー操作が必要であり、
+ *   ペーストはフォーカスされた編集可能フィールドに限定されている ***/
 // user_pref("dom.event.clipboardevents.enabled", false);
 
 /* 7014: システムアドオンのアップデートを無効化
- * 【理由】セキュリティリスク。システムアドオンにはプレファレンスで対応する
+ * - [WHY] セキュリティリスク。システムアドオンにはプレファレンスで対応する
  */
 // user_pref("extensions.systemAddon.update.enabled", false); // [FF62+]
 // user_pref("extensions.systemAddon.update.url", ""); // [FF44+]
 
 /* 7015: DNT（Do Not Track）ヘッダーを有効化
- * 【理由】ETP Strict（2701）で実効的に強制されるため補完的意味合い
+ * - [WHY] ETP Strict（2701）で実効的に強制されるため補完的意味合い
  */
 // user_pref("privacy.donottrackheader.enabled", true);
 
-/* 7016: ETP関連の設定群（FPP含む）
- * 【注意】RFP（4501）有効時にはFPPは無視される
- * 【理由】ArkenfoxではStrictモード（2701）のみサポートし、実行時に自動で適用される
- */
-// ETP Strictモード
+/* 7016: ETP（強化型トラッキング防止）関連設定の明示
+ * - [構成方針] Arkenfox では strict（2701）のみを正式サポートしており、
+ *   本来は実行時に以下の設定が自動適用されます
+ * - [方針] ただし構成意図の可視化・将来の変更への耐性・監査性を重視して、あえて明示的に記述します
+ * - [NOTE] fingerprintingProtection（FPP）は、RFP（4501）が有効な場合は Firefox によって無視されます ***/
+// ETP Strictモード（Cookie パーティショニング）
 user_pref("network.cookie.cookieBehavior", 5); // [デフォルト: 5（ETP Strict）]
 user_pref("network.cookie.cookieBehavior.optInPartitioning", true); // [ETP FF132+]
 // Refererポリシー強化
@@ -1434,48 +1442,49 @@ user_pref("network.http.referer.disallowCrossSiteRelaxingDefault", true);
 user_pref("network.http.referer.disallowCrossSiteRelaxingDefault.top_navigation", true); // [FF100+]
 // バウンストラッキング防止
 user_pref("privacy.bounceTrackingProtection.mode", 1); // [FF131+] [ETP FF133+]
-// 指紋取得防止（RFPは無効なのでFPPを有効化）
-// RFPほどの互換性問題はなく、Canvas, Audio, WebGLなど主要APIに制限がかかる
-// ETP「厳格」だけでは防げない識別系の補完として推奨されます
+// 指紋取得防止（RFPは無効な構成のため、FPPを有効化）
+// - RFPほどの互換性問題はなく、Canvas, Audio, WebGLなど主要APIに制限がかかる
+// - ETP Strictだけでは防げない識別手法を補完するため推奨
 user_pref("privacy.fingerprintingProtection", true); // [FF114+] [ETP FF119+]
 // OCSPキャッシュの分離（明示）
 user_pref("privacy.partition.network_state.ocsp_cache", true); // [デフォルト: true]
 // トラッキングクエリ除去
 user_pref("privacy.query_stripping.enabled", true); // [FF101+]
-// トラッキング保護群
+// トラッキング保護群（ETP Strict で有効化されるが、明示）
 user_pref("privacy.trackingprotection.enabled", true);
 user_pref("privacy.trackingprotection.socialtracking.enabled", true);
 user_pref("privacy.trackingprotection.cryptomining.enabled", true); // [デフォルト: true]
 user_pref("privacy.trackingprotection.fingerprinting.enabled", true); // [デフォルト: true]
 
 /* 7017: Service Workerを無効化
- * 【理由】TCP（2701）で既に隔離されており、2710で制御可能
+ * - [WHY] TCP（2701）で既に隔離されており、2710で制御可能
  */
 // user_pref("dom.serviceWorkers.enabled", false);
 
 /* 7018: Web通知を無効化 [FF22+]
- * 【理由】7002でプロンプト設定済み。重複制御
+ * - [WHY] 7002でプロンプト設定済み。重複制御
  * [1] https://blog.mozilla.org/en/products/firefox/block-notification-requests/
  */
 // user_pref("dom.webnotifications.enabled", false);
 
 /* 7019: プッシュ通知を無効化 [FF44+]
- * 【理由】WebサイトによるPushにはユーザー同意が必須。CRLite（1224）にもAPIが必要
+ * - [WHY] WebサイトによるPushにはユーザー同意が必須。CRLite（1224）にもAPIが必要
  * 【補足】すべての購読を削除したい場合は "dom.push.userAgentID" をリセット
  * [1] https://support.mozilla.org/kb/push-notifications-firefox
  */
 // user_pref("dom.push.enabled", false);
 
-/* 7020: WebRTC（リアルタイム通信）を無効化
- * 【理由】mDNSホスト名による秘匿、プライベートIPは明示的なアクセス許可後にのみ露出
- * [テスト] https://browserleaks.com/webrtc
- * [1] https://groups.google.com/g/discuss-webrtc/c/6stQXi72BEU/m/2FwZd24UAQAJ
- * [2] https://datatracker.ietf.org/doc/html/draft-ietf-mmusic-mdns-ice-candidates#section-3.1.1
- */
+/* 7020: WebRTC（Web Real-Time Communication）を無効化
+ * - [WHY] デスクトップ版Firefoxは、mDNSホスト名による難読化を使用しており、
+ *   信頼できる状況（＝ユーザーがマイクやカメラへのアクセスを許可した後）になるまで
+ *   プライベートIPアドレスは一切外部に露出しません
+ * - [TEST] https://browserleaks.com/webrtc
+ * - [1] https://groups.google.com/g/discuss-webrtc/c/6stQXi72BEU/m/2FwZd24UAQAJ
+ * - [2] https://datatracker.ietf.org/doc/html/draft-ietf-mmusic-mdns-ice-candidates#section-3.1.1 ***/
 // user_pref("media.peerconnection.enabled", false);
 
 /* 7021: GPC（Global Privacy Control）を有効化（通常ウィンドウのみ）
- * 【理由】ETP Strictや閉じる際のデータ消去（2800番台）で十分カバーされる
+ * - [WHY] ETP Strictや閉じる際のデータ消去（2800番台）で十分カバーされる
  */
 // user_pref("privacy.globalprivacycontrol.enabled", true);
 
