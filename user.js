@@ -108,7 +108,8 @@ user_pref("extensions.htmlaboutaddons.recommendations.enabled", false);
  * [1] https://support.mozilla.org/kb/personalized-extension-recommendations ***/
 user_pref("browser.discovery.enabled", false);
 
-/* 0323: ショッピング体験機能を無効化 [FF116+] ***/
+/* 0323: ショッピング体験機能を無効化 [FF116+]
+ * [1] https://bugzilla.mozilla.org/show_bug.cgi?id=1840156#c0 ***/
 user_pref("browser.shopping.experience2023.enabled", false); // [デフォルト: false]
 
 
