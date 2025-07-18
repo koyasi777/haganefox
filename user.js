@@ -298,6 +298,7 @@ user_pref("network.gio.supported-protocols", ""); // [隠し設定] [デフォ�
 
 
 /*** [SECTION 0800]: ロケーションバー / 検索バー / サジェスト / 履歴 / フォーム ***/
+
 /* 0801: ロケーションバーによる推測的な接続（speculative connections）を無効化 [FF56+]
  * [1] https://bugzilla.mozilla.org/1348275 ***/
 user_pref("browser.urlbar.speculativeConnect.enabled", false);
