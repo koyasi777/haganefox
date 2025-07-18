@@ -763,9 +763,9 @@ user_pref("browser.contentblocking.category", "strict"); // [隠し設定]
 /* 2810: Firefox 終了時に項目を自動削除（サニタイズ）を有効化
  * [注] FF129+では、"サイト設定"（2811+）や"サイトデータ"（2820+）、"履歴"（2830）での削除は、
  *       cookieおよびサイトデータの例外（2815）には影響しなくなる
- * [設定] プライバシーとセキュリティ > 履歴 > Firefox終了時に履歴を消去 > 設定 ***/
-// user_pref("privacy.sanitize.sanitizeOnShutdown", true);
-user_pref("privacy.sanitize.sanitizeOnShutdown", false); // 起動時に前回のセッションを復元したいのでfalseに（履歴を保持）
+ * [設定] プライバシーとセキュリティ > 履歴 > Firefox終了時に履歴を消去 > 設定
+ * [CUSTOM] 起動時に前回のセッションを復元したいのでfalseに（履歴を保持）***/
+user_pref("privacy.sanitize.sanitizeOnShutdown", false);
 
 /* 2811: 終了時に削除する項目（2810 が true の場合）を設定・強制 [SETUP-CHROME] [FF128+] ***/
 user_pref("privacy.clearOnShutdown_v2.cache", true);                        // キャッシュ [デフォルト: true]
@@ -791,7 +791,7 @@ user_pref("privacy.clearOnShutdown_v2.formdata", true);                    // �
  * [警告] サイトに「許可」例外を設定すると、Cookieのパーティショニングも無効化される点に注意
  * [設定] 例外追加: Ctrl+I > 権限 > Cookie > 許可
  * [設定] 例外管理: オプション > プライバシーとセキュリティ > 権限 > 設定
- * [NOTE] これを `false` にすることで、ログイン状態が維持されます。 ***/
+ * [CUSTOM] これを `false` にすることで、ログイン状態を維持させます。 ***/
 user_pref("privacy.clearOnShutdown_v2.cookiesAndStorage", false);
 
 
@@ -858,10 +858,9 @@ user_pref("privacy.sanitize.timeSpan", 0); // すべて削除
       キャンバスを微妙にランダマイズ（FF120+）
 ***/
 
-/* 4001: プライベートブラウジングモードでFPPを有効にする [FF114+]
- * 【注意】FF119以降では、すべてのモードにおけるFPP（7016）は
- *         ETPの「厳格モード」（設定2701）によって有効になる
- */
+/* 4001: プライベートブラウジングモードでの FPP（First-Party Partitioning）を有効化 [FF114+]
+ * - [NOTE] Firefox 119 以降では、すべてのモードにおけるFPP（7016）は
+ *   ETP「厳格モード」（2701）を有効にすることで自動的に有効になります ***/
 user_pref("privacy.fingerprintingProtection.pbmode", true); // [デフォルト: true]
 
 /* 4002: グローバルなFPPの上書き設定を指定する [FF114+]
@@ -884,7 +883,7 @@ user_pref("privacy.fingerprintingProtection.pbmode", true); // [デフォルト:
    // user_pref("privacy.fingerprintingProtection.granularOverrides", "");
 
 /* 4004: リモートFPP上書きを無効化する [FF127+]
- * → 将来的にFPPが外部サーバーの指示で特定サイトに対して緩和されることを防ぐ
+ * [CUSTOM] 将来的にFPPが外部サーバーの指示で特定サイトに対して緩和されることを防ぐ為、ここではfalseを明示
  */
 user_pref("privacy.fingerprintingProtection.remoteOverrides.enabled", false);
 
@@ -969,7 +968,7 @@ user_pref("privacy.fingerprintingProtection.remoteOverrides.enabled", false);
  * またRFP有効時には以下の副作用がある：
  *  - タイムゾーンがGMTに固定
  *  - サイトがlight（明）テーマを優先表示する傾向あり
- *  [NOTE] RFPは強力ですが、ウェブサイトの表示崩れやタイムゾーンの固定など、利便性への影響が大きいため、ここでは有効にしません
+ *  [CUSTOM] RFPは強力ですが、ウェブサイトの表示崩れやタイムゾーンの固定など、利便性への影響が大きいため、ここでは有効にしません
  */
    // user_pref("privacy.resistFingerprinting", true); // [FF41+]
    // user_pref("privacy.resistFingerprinting.pbmode", true); // [FF114+]
