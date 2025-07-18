@@ -14,27 +14,20 @@
  *
  * [ Concept ]
  *
- * Your Firefox, forged into steel.
- *
- * This user.js aims for a practical balance between the robust security and privacy of
- * projects like Arkenfox, and the sharp performance and usability from projects like
- * Betterfox. It is designed to be a strong, resilient, and practical tool for daily
- * Browse by developers and power users.
- *
- * (あなたのFirefoxを、鋼のように堅牢に。
- * このuser.jsは、Arkenfoxのような強力なセキュリティ・プライバシーと、
+ * あなたのFirefoxを、鋼のように堅牢に。
+ * このuser.jsは、arkenfoxのような強力なセキュリティ・プライバシーと、
  * Betterfoxのような鋭いパフォーマンス・利便性の間で、実用的なバランスを
  * 取ることを目的としています。開発者やパワーユーザーの日常的なブラウジングにおける、
- * 強固で、しなやかで、実用的なツールとなるよう設計されています。)
+ * 強固で、しなやかで、実用的なツールとなるよう設計されています。
  *
  *****************************************************************************************
  *
  * [ Installation ]
  *
- * 1. Go to `about:support` in your Firefox address bar.
- * 2. Find "Profile Directory" and click "Open Directory".
- * 3. Place this `user.js` file into that directory.
- * 4. Restart Firefox to apply the settings.
+ * 1. Firefox のアドレスバーに `about:support` と入力して開きます。  
+ * 2. 「プロファイルフォルダー」欄を探し、「フォルダーを開く」をクリックします。  
+ * 3. この `user.js` ファイルを、そのフォルダーに配置します。  
+ * 4. Firefox を再起動して設定を反映させます。  
  *
  *****************************************************************************************
  *
