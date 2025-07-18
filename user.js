@@ -446,12 +446,19 @@ user_pref("browser.sessionstore.privacy_level", 2);
    [1] https://www.securityartwork.es/2017/02/02/tls-client-fingerprinting-with-bro/
 ***/
 
-/* 1201: 安全なネゴシエーションを要求する
- * RFC 5746 に未対応のサーバーへの接続をブロック（MiTM攻撃の可能性あり）
- * サーバー側で再ネゴシエーションを無効化していれば安全だが、クライアント側では判別不可能
- * true に設定することでブラウザは「危険な再ネゴシエーションが発生しない」ことを保証できる
- * [SETUP-WEB] 特定サイトでエラーになる場合、例外設定を検討（エラー名: SSL_ERROR_UNSAFE_NEGOTIATION）
- * [STATS] 2024年5月現在、SSL Labs によると上位サイトの99.7%以上が安全な再ネゴシエーション対応済み [4]
+/*** SSL (Secure Sockets Layer) / TLS (Transport Layer Security) ***/
+
+/* 1201: 安全なネゴシエーション（RFC 5746）を必須にする
+ * - RFC 5746 に対応していないサーバーへの接続をブロックします。
+ *   これらは中間者攻撃（MiTM）の脆弱性 [3] を抱えている可能性があります
+ * - RFC 5746 に未対応でもサーバー側で再ネゴシエーションを無効化していれば
+ *   安全なこともありますが、**ブラウザからはそれを判別できません**
+ * - この設定を true にすることで、**ブラウザとサーバー間のチャネルで
+ *   安全でない再ネゴシエーションが行われないことを保証できます**
+ * - [SETUP-WEB] 接続エラー（SSL_ERROR_UNSAFE_NEGOTIATION）になった場合でも、
+ *   それが本当に無視する価値のあるサイトかどうかを検討してください
+ * - [STATS] SSL Labs（2024年5月時点）では上位サイトの99.7%以上が
+ *   安全な再ネゴシエーションに対応済みと報告されています [4]
  * [1] https://wiki.mozilla.org/Security:Renegotiation
  * [2] https://datatracker.ietf.org/doc/html/rfc5746
  * [3] https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-3555
