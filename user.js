@@ -1622,7 +1622,7 @@ user_pref("signon.autofillForms.http", false);
  */
 user_pref("fission.autostart", true);
 
-/* [Security] DoH確認時のテレメトリ送信を無効化
+/* [Privacy] DoH確認時のテレメトリ送信を無効化
  * - FirefoxはDoH接続前に確認リクエストを送信し、その結果をMozillaに送る（ネットワーク確認テレメトリ）
  * - プライバシー重視構成ではこの送信をブロックしても実害はない
  * - DoHの機能そのものには影響しないため、安全に無効化可能 ***/
