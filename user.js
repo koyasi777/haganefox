@@ -138,6 +138,8 @@ user_pref("app.normandy.api_url", "");
 /* 0350: クラッシュレポートを無効化 ***/
 user_pref("breakpad.reportURL", "");
 user_pref("browser.tabs.crashReporting.sendReport", false); // [FF44+]
+   // user_pref("browser.crashReports.unsubmittedCheck.enabled", false); // [FF51+] [デフォルト: false]
+
 /* 0351: 未送信クラッシュレポートの自動送信を強制的に無効化 [FF58+]
  * [設定] プライバシーとセキュリティ>クラッシュレポートを送信 ***/
 user_pref("browser.crashReports.unsubmittedCheck.autoSubmit2", false); // [デフォルト: false]
@@ -1179,47 +1181,47 @@ user_pref("browser.sessionstore.resume_from_crash", true);
  * 【理由】失効済み証明書の更新（例：OneCRL）を含む重要なセキュリティ保護機構
  * [1] https://blog.mozilla.org/security/2015/03/03/revoking-intermediate-certificates-introducing-onecrl/
  */
-user_pref("extensions.blocklist.enabled", true); // [DEFAULT: true]
+user_pref("extensions.blocklist.enabled", true); // [デフォルト: true]
 
 /* 6002: Referer（リファラ）の偽装を禁止
  * 【理由】Refererの偽装はCSRF（クロスサイトリクエストフォージェリ）対策を回避する可能性がある
  */
-user_pref("network.http.referer.spoofSource", false); // [DEFAULT: false]
+user_pref("network.http.referer.spoofSource", false); // [デフォルト: false]
 
 /* 6004: 一部の確認ダイアログ（インストール・保存など）にセキュリティ遅延を強制
  * 【理由】レースコンディションによる誤操作の防止、クリックジャック防止
  * [1] https://www.squarefree.com/2004/07/01/race-conditions-in-security-dialogs/
  */
-user_pref("security.dialog_enable_delay", 1000); // [DEFAULT: 1000]
+user_pref("security.dialog_enable_delay", 1000); // [デフォルト: 1000]
 
 /* 6008: First Party Isolation（FPI）を無効に強制 [FF51+]
  * 【警告】FPIはFirefox 85以降ではネットワークパーティショニングやTotal Cookie Protection（TCP, 設定2701）に置き換えられた
  *         FPIを有効にするとこれらが無効になる。現在FPIはTor Browser専用設定でメンテナンスされている
  */
-user_pref("privacy.firstparty.isolate", false); //  [DEFAULT: false]
+user_pref("privacy.firstparty.isolate", false); //  [デフォルト: false]
 
 /* 6009: SmartBlock用Shim（互換性レイヤー）を有効に強制 [FF81+]
  * 【理由】互換性問題を回避するための代替ライブラリ（shims）を読み込む
  * [1] https://blog.mozilla.org/security/2021/03/23/introducing-smartblock/
  */
-user_pref("extensions.webcompat.enable_shims", true); // [HIDDEN PREF] [DEFAULT: true]
+user_pref("extensions.webcompat.enable_shims", true); // [HIDDEN PREF] [デフォルト: true]
 
 /* 6010: TLS 1.0 / 1.1 の使用を禁止（古いプロトコルへのダウングレードを防止し、安全なTLSのみ許容）
  * 【テスト】https://tls-v1-1.badssl.com:1010/
  */
-user_pref("security.tls.version.enable-deprecated", false); // [DEFAULT: false]
+user_pref("security.tls.version.enable-deprecated", false); // [デフォルト: false]
 
 /* 6011: Web Compatibility Reporter を無効に強制 [FF56+]
  * Web Compatibility Reporter は「サイトの問題を報告」ボタンを表示し、Mozillaにデータを送信する
  * 【理由】カスタム構成での動作報告はMozillaの調査リソースを浪費する可能性があるため
  */
-user_pref("extensions.webcompat-reporter.enabled", false); // [DEFAULT: false]
+user_pref("extensions.webcompat-reporter.enabled", false); // [デフォルト: false]
 
 /* 6012: Quarantined Domains（隔離ドメイン機能）を有効に強制 [FF115+]
  * 【理由】Mozillaが危険と判断したドメインに対し、機能制限を適用するセキュリティ保護機構
  * [WHY] https://support.mozilla.org/kb/quarantined-domains
  */
-user_pref("extensions.quarantinedDomains.enabled", true); // [DEFAULT: true]
+user_pref("extensions.quarantinedDomains.enabled", true); // [デフォルト: true]
 
 /* 6050: prefsCleaner：Arkenfox FF128以降で削除された以前の設定項目をリセット
  * 【目的】古い設定ファイルに残った不要な設定を初期化するためのブロック
