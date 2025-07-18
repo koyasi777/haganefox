@@ -410,11 +410,13 @@ user_pref("network.auth.subresource-http-auth-allow", 1);
 
 /* 1001: ディスクキャッシュを無効化
  * [注] 終了時にキャッシュをクリアする設定（2811+）もあり
- * [SETUP-CHROME] パフォーマンス向上のためディスクキャッシュを使いたいならこの設定は無効に
- * [NOTE] セッション中のパフォーマンス向上のため、ディスクキャッシュを有効化します。
- * [NOTE] プライバシー保護のため、終了時にキャッシュを削除します（→ see 2811）
- ***/
-user_pref("browser.cache.disk.enable", true); // 明示的に有効化
+ * [SETUP-CHROME] パフォーマンス向上のためディスクキャッシュを使いたいならこの設定は無効に ***/
+user_pref("browser.cache.disk.enable", false);
+
+/* 1002: プライベートブラウジング中のメディアキャッシュをメモリ上に限定し、その最大サイズを増加させる
+ * [注記] MSE（Media Source Extensions）は、プライベートブラウジング中は既にメモリ上に保存されている ***/
+user_pref("browser.privatebrowsing.forceMediaMemoryCache", true); // [FF75+]
+user_pref("media.memory_cache_max_size", 65536);
 
 /* 1003: 追加セッションデータの保存を無効化 [SETUP-CHROME]
  * フォームの内容・Cookie・POSTデータなどの保存対象サイトを制御
