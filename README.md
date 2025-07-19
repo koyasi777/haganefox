@@ -68,5 +68,5 @@ Haganefox doesn’t just defend—it sharpens and streamlines your entire browsi
 
 ## 🙏 Acknowledgements
 
-This project would not exist without the outstanding work of [**Arkenfox**](https://github.com/arkenfox/user.js) and [**Betterfox**](https://github.com/yokoffing/Betterfox).  
+This project would not exist without the outstanding work of [**arkenfox**](https://github.com/arkenfox/user.js) and [**Betterfox**](https://github.com/yokoffing/Betterfox).  
 Sincere thanks to their contributors for creating such high-quality foundations to build upon.
