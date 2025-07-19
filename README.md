@@ -4,7 +4,7 @@
 
 ---
 
-## 🧱 Concept
+## 🧠 Concept
 
 `Haganefox` is a Firefox `user.js` configuration designed to transform your browser into a tool as robust and practical as forged steel.
 
