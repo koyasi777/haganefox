@@ -1,6 +1,8 @@
 # 🔩 Haganefox 🔩
 
-**Your Firefox, forged into steel.**
+**Your Firefox, forged into steel.**  
+  
+>📘 日本語版のREADMEは [こちら](./README-ja.md)
 
 ---
 
