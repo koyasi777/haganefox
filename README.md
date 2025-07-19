@@ -4,7 +4,7 @@
 
 ---
 
-## Concept
+## 🧱 Concept
 
 `Haganefox` is a Firefox `user.js` configuration designed to transform your browser into a tool as robust and practical as forged steel.
 
@@ -18,26 +18,26 @@ Haganefox doesn’t just defend—it sharpens and streamlines your entire browsi
 
 ---
 
-## Key Features
+## ⚙️ Key Features
 
-- **Steel-Clad Security**  
+- **🛡️ Steel-Clad Security**  
   Built on the arkenfox foundation, Haganefox fortifies Firefox against modern web threats like tracking, fingerprinting, and data leakage.
 
-- **Sharp Performance**  
+- **⚡ Sharp Performance**  
   Optimized network, rendering, and cache settings for a lightweight, responsive feel—especially on developer workflows and power usage.
 
-- **Practical Strength**  
+- **🧩 Practical Strength**  
   Avoids extreme or brittle settings that break websites. Balances strong security with real-world usability.
 
-- **Well-Documented**  
+- **📝 Well-Documented**  
   Every setting is clearly commented for full transparency and ease of customization.
 
-- **Quality of Life Enhancements**  
+- **🎛️ Quality of Life Enhancements**  
   Includes UI/UX tweaks and developer-friendly switches to improve everyday comfort and utility.
 
 ---
 
-## Intended Users
+## 🎯 Intended Users
 
 - Users who want to harden Firefox without degrading the user experience.
 - Developers and power users who want fast, responsive performance with thoughtful defaults.
@@ -45,7 +45,7 @@ Haganefox doesn’t just defend—it sharpens and streamlines your entire browsi
 
 ---
 
-## Installation
+## 🛠️ Installation
 
 1. In Firefox, type `about:support` into the address bar and hit Enter.
 2. Find the **"Profile Folder"** entry and click **"Open Folder"**.
@@ -58,7 +58,7 @@ Haganefox doesn’t just defend—it sharpens and streamlines your entire browsi
 
 ---
 
-## Disclaimer
+## ⚠️ Disclaimer
 
 - This configuration is a personal custom build. Use it **at your own risk**.
 - Some websites may break or behave unexpectedly due to hardened security.
@@ -66,7 +66,7 @@ Haganefox doesn’t just defend—it sharpens and streamlines your entire browsi
 
 ---
 
-## Acknowledgements
+## 🙏 Acknowledgements
 
 This project would not exist without the outstanding work of [**Arkenfox**](https://github.com/arkenfox/user.js) and [**Betterfox**](https://github.com/yokoffing/Betterfox).  
 Sincere thanks to their contributors for creating such high-quality foundations to build upon.
