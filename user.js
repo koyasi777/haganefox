@@ -5,7 +5,7 @@
  *****************************************************************************************
  *
  * [ Project ]    Haganefox
- * [ Version ]    1.1.0
+ * [ Version ]    1.1.2
  * [ Updated ]    2025-07-19
  * [ Repository ] https://github.com/koyasi777/haganefox
  * [ License ]    MIT License
@@ -25,10 +25,11 @@
  *
  * [ Installation ]
  *
- * 1. Go to `about:support` in your Firefox address bar.
- * 2. Find "Profile Directory" and click "Open Directory".
- * 3. Place this `user.js` file into that directory.
- * 4. Restart Firefox to apply the settings.
+ * 1. In Firefox, type `about:support` into the address bar and hit Enter.
+ * 2. Find the **"Profile Folder"** entry and click **"Open Folder"**.
+ * 3. Place your `user.js` file into this folder.  
+ *    Important: The file must be named exactly `user.js`. Firefox only auto-loads settings from this filename.
+ * 4. Restart Firefox to apply the configuration.
  *
  *****************************************************************************************
  *
@@ -388,6 +389,11 @@ user_pref("network.auth.subresource-http-auth-allow", 1);
  * [NOTE] We also clear cache on exit (2811+)
  * [SETUP-CHROME] If you think disk cache helps perf, then feel free to override this ***/
 user_pref("browser.cache.disk.enable", false);
+
+/* 1002: set media cache in Private Browsing to in-memory and increase its maximum size
+ * [NOTE] MSE (Media Source Extensions) are already stored in-memory in PB ***/
+user_pref("browser.privatebrowsing.forceMediaMemoryCache", true); // [FF75+]
+user_pref("media.memory_cache_max_size", 65536);
 
 /* 1003: disable storing extra session data [SETUP-CHROME]
  * define on which sites to save extra session data such as form content, cookies and POST data
