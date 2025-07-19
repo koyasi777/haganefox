@@ -1,48 +1,72 @@
-# Haganefox (鋼フォックス)
+# Haganefox
 
 **Your Firefox, forged into steel.**
-*(あなたのFirefoxを、鋼のように堅牢に。)*
 
 ---
 
-## Concept (コンセプト)
+## Concept
 
-`Haganefox` は、その名の通り、ウェブブラウザを「鋼（はがね）」のように堅牢かつ実用的なツールへと変えるための Firefox `user.js` 設定です。
+`Haganefox` is a Firefox `user.js` configuration designed to transform your browser into a tool as robust and practical as forged steel.
 
-鋼は、ただ硬いだけではありません。強さと同時に、加工できる「しなやかさ」を併せ持ち、実用的な道具の素材として最適です。この設定は、その思想を体現しています。
+The word **"Hagane" (鋼)** means *steel* in Japanese—a material prized not only for its strength but also for its flexibility and resilience. True steel isn’t just hard; it’s tempered to be both tough and workable.  
+This configuration embodies that dual nature:
 
-* **鋼の「硬さ」(Hardness):** [arkenfox](https://github.com/arkenfox/user.js) の思想を継承した、妥協のないセキュリティとプライバシーの堅牢化。
-* **鋼の「しなやかさ」(Flexibility):** [Betterfox](https://github.com/yokoffing/Betterfox) のようなプロジェクトから着想を得た、応答性と体感速度を高めるパフォーマンスチューニングと、日常的な利便性を損なわない実用的な判断。
+- **Steel-like Hardness:** Relentless focus on privacy and security, inheriting the hardened stance of [arkenfox](https://github.com/arkenfox/user.js).
+- **Steel-like Flexibility:** Inspired by [Betterfox](https://github.com/yokoffing/Betterfox), with practical, real-world performance tuning that improves responsiveness without sacrificing usability.
 
-`Haganefox` は、ただ守りを固めるだけでなく、日々のブラウジング体験を鋭く、快適にすることも目的としています。
+Haganefox doesn’t just defend—it sharpens and streamlines your entire browsing experience.
 
-## Key Features (主な特徴)
+---
 
-* **Steel-Clad Security (鋼鉄の守り):** arkenfoxをベースとした強力なセキュリティ・プライバシー基盤。トラッキング、フィンガープリントなど、現代のウェブに潜む脅威からあなたを保護します。
-* **Sharp Performance (鋭いパフォーマンス):** ネットワークやレンダリングに関する設定を最適化。ページの読み込みや操作への応答性を高め、軽快なブラウジング体験を提供します。
-* **Practical Strength (実用的な強度):** 極端な設定によるウェブサイトの表示崩れや機能不全を避け、セキュリティと利便性が高いレベルで両立するよう調整されています。セッション復元など、多くのユーザーにとって不可欠な機能は標準で有効です。
-* **Well-Documented (詳細なコメント):** 全ての設定項目に、その目的や影響を解説するコメントを付与。ユーザー自身が設定を理解し、カスタマイズする際の助けとなります。
-* **Quality of Life (快適性の向上):** パワーユーザーや開発者のための、細やかなUI/UX改善設定を多数含んでいます。
+## Key Features
 
-## Target Audience (対象ユーザー)
+- **Steel-Clad Security**  
+  Built on the arkenfox foundation, Haganefox fortifies Firefox against modern web threats like tracking, fingerprinting, and data leakage.
 
-* 標準のブラウザではセキュリティに不安を感じるが、ウェブの利便性も失いたくない方。
-* ブラウザの応答性やパフォーマンスを最大限に引き出したいパワーユーザーや開発者。
-* 厳格すぎるプライバシー設定（例: RFP）による表示崩れや操作性の低下に煩わしさを感じた経験のある方。
+- **Sharp Performance**  
+  Optimized network, rendering, and cache settings for a lightweight, responsive feel—especially on developer workflows and power usage.
 
-## Installation (導入方法)
+- **Practical Strength**  
+  Avoids extreme or brittle settings that break websites. Balances strong security with real-world usability.
 
-1.  Firefoxのアドレスバーに `about:support` と入力します。
-2.  「プロファイルフォルダー」の欄にある「フォルダーを開く」ボタンをクリックします。
-3.  開かれたフォルダーの中に、このリポジトリの `user.js` ファイルを配置します。
-4.  Firefoxを再起動すると設定が適用されます。
+- **Well-Documented**  
+  Every setting is clearly commented for full transparency and ease of customization.
 
-## Disclaimer (注意事項)
+- **Quality of Life Enhancements**  
+  Includes UI/UX tweaks and developer-friendly switches to improve everyday comfort and utility.
 
-* これは個人用に調整された設定です。自己責任でご利用ください。
-* 堅牢化設定の影響により、一部のウェブサイトが意図した通りに動作しない可能性があります。
-* 導入前に、ご自身のニーズや脅威モデルと設定内容が合致しているかを確認することを強く推奨します。
+---
 
-## Acknowledgements (謝辞)
+## Intended Users
 
-この `user.js` は、**Arkenfox** と **Betterfox** という素晴らしいプロジェクトの成果なくしては実現できませんでした。両プロジェクトの貢献者の方々に心から感謝いたします。
+- Users who want to harden Firefox without degrading the user experience.
+- Developers and power users who want fast, responsive performance with thoughtful defaults.
+- Anyone who has struggled with breakages from strict configurations like RFP, and seeks a more usable alternative.
+
+---
+
+## Installation
+
+1. In Firefox, type `about:support` into the address bar and hit Enter.
+2. Find the **"Profile Folder"** entry and click **"Open Folder"**.
+3. Place your `user.js` file into this folder.  
+   **⚠️ Important:** The file must be named exactly `user.js`. Firefox only auto-loads settings from this filename.
+4. Restart Firefox to apply the configuration.
+
+> 💡 This repository also includes **`user-ja.js`**, a version with Japanese comments.  
+> If you use it, make sure to rename it to `user.js` before placing it in your profile folder.
+
+---
+
+## Disclaimer
+
+- This configuration is a personal custom build. Use it **at your own risk**.
+- Some websites may break or behave unexpectedly due to hardened security.
+- You are strongly encouraged to review the settings and make sure they match your usage needs and threat model.
+
+---
+
+## Acknowledgements
+
+This project would not exist without the outstanding work of [**Arkenfox**](https://github.com/arkenfox/user.js) and [**Betterfox**](https://github.com/yokoffing/Betterfox).  
+Sincere thanks to their contributors for creating such high-quality foundations to build upon.
