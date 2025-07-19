@@ -1,4 +1,4 @@
-# Haganefox
+# 🔩 Haganefox 🔩
 
 **Your Firefox, forged into steel.**  
 *(あなたのFirefoxを、鋼のように堅牢に。)*
