@@ -1004,8 +1004,9 @@ user_pref("privacy.resistFingerprinting.block_mozAddonManager", true);  // AMO�
  * ウィンドウの内側サイズをステップ単位でマージンを付けて調整
  * 「dimensions」設定を使うと、指定サイズのみが適用される
  * フォーマット例: "800x600, 1000x1000"
- * 【設定ヒント - WEB】この機能はRFP（4501）と独立。RFP未使用でも使用可能。
- *   ただしRFP使用中でマージンが気になる場合は無効化も選択可能。
+ * 【設定ヒント - WEB】この機能は RFP (4501) と独立。
+ *   RFP を使っていて余白（マージン）が気に入らない場合は、この設定を有効化しないでください。
+ *   なお、この設定は実質的にフィンガープリンティング可能です。
  * 【警告】「dimensions」設定はテスト用途のみであり、実運用では非推奨（指紋取得の元になる）
  * [1] https://bugzilla.mozilla.org/1407366
  * [2] https://hg.mozilla.org/mozilla-central/rev/7211cb4f58ff#l5.13
