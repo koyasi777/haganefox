@@ -5,8 +5,8 @@
  *****************************************************************************************
  *
  * [ Project ]    Haganefox
- * [ Version ]    1.1.2
- * [ Updated ]    2025-07-19
+ * [ Version ]    1.5.0
+ * [ Updated ]    2025-08-14
  * [ Repository ] https://github.com/koyasi777/haganefox
  * [ License ]    MIT License
  *
@@ -33,7 +33,7 @@
  *****************************************************************************************
  *
  * [ References ]
- * arkenfox user.js (v135)
+ * arkenfox user.js (v140)
  * https://github.com/arkenfox/user.js
  * 
  * Betterfox (v138)   
@@ -58,7 +58,7 @@ user_pref("browser.startup.page", 3);
 /* 0103: ホーム + 新しいウィンドウのページ設定
  * about:home = Firefoxホーム（デフォルト、0105を参照）、カスタムURL、about:blank など
  * [設定] ホーム>新しいウィンドウとタブ>ホームページと新しいウィンドウ ***/
-user_pref("browser.startup.homepage", "about:blank");
+user_pref("browser.startup.homepage", "chrome://browser/content/blanktab.html");
 
 /* 0104: 新しいタブのページ設定
  * true = Firefoxホーム（デフォルト、0105を参照）、false = 空白ページ
@@ -67,8 +67,9 @@ user_pref("browser.newtabpage.enabled", false);
 
 /* 0105: Firefoxホーム（アクティビティストリーム）のスポンサーコンテンツを無効化
  * [設定] ホーム>Firefoxホームコンテンツ ***/
-user_pref("browser.newtabpage.activity-stream.showSponsored", false); // [FF58+]
-user_pref("browser.newtabpage.activity-stream.showSponsoredTopSites", false); // [FF83+] ショートカット > スポンサー付きショートカットの表示を無効にする
+user_pref("browser.newtabpage.activity-stream.showSponsored", false); // [FF58+] スポンサー記事を無効化
+user_pref("browser.newtabpage.activity-stream.showSponsoredTopSites", false); // [FF83+] スポンサー付きショートカットを無効化
+user_pref("browser.newtabpage.activity-stream.showSponsoredCheckboxes", false); // [FF140+] Firefox 支援に関するチェックボックスを無効化
 
 /* 0106: デフォルトのトップサイトをクリア
  * [注] ユーザーが手動で追加することは可能 ***/
@@ -107,7 +108,7 @@ user_pref("browser.discovery.enabled", false);
 user_pref("browser.shopping.experience2023.enabled", false); // [デフォルト: false]
 
 
-/** テレメトリ関連 ***/
+/** アクティビティストリーム ***/
 
 /* 0335: Firefoxホーム（アクティビティストリーム）のテレメトリを無効化 ***/
 user_pref("browser.newtabpage.activity-stream.feeds.telemetry", false);
@@ -317,12 +318,13 @@ user_pref("browser.urlbar.suggest.quicksuggest.sponsored", false); // [FF92+]
 user_pref("browser.urlbar.trending.featureGate", false);
 
 /* 0806: URLバーの各種機能別サジェストを無効化 ***/
-user_pref("browser.urlbar.addons.featureGate", false);         // 拡張機能 [FF115+]
-user_pref("browser.urlbar.fakespot.featureGate", false)       // Fakespot [FF130+] [デフォルト: false]
-user_pref("browser.urlbar.mdn.featureGate", false);            // MDN [FF117+] [隠し設定]
-user_pref("browser.urlbar.pocket.featureGate", false);         // Pocket [FF116+] [デフォルト: false]
-user_pref("browser.urlbar.weather.featureGate", false);        // 天気情報 [FF108+] [デフォルト: false]
-user_pref("browser.urlbar.yelp.featureGate", false);           // Yelp [FF124+]
+user_pref("browser.urlbar.addons.featureGate", false);       // 拡張機能 [FF115+]
+user_pref("browser.urlbar.amp.featureGate", false);          // adMarketplace（広告）[FF141+]
+user_pref("browser.urlbar.fakespot.featureGate", false);     // Fakespot [FF130+] [デフォルト: false]
+user_pref("browser.urlbar.mdn.featureGate", false);          // MDN [FF117+]
+user_pref("browser.urlbar.weather.featureGate", false);      // 天気情報 [FF108+]
+user_pref("browser.urlbar.wikipedia.featureGate", false);    // Wikipedia [FF141+]
+user_pref("browser.urlbar.yelp.featureGate", false);         // Yelp [FF124+]
 
 /* 0807: クリップボードの内容を基にしたサジェストを無効化 [FF118+] ***/
    // user_pref("browser.urlbar.clipboard.featureGate", false);
@@ -674,7 +676,7 @@ user_pref("network.IDN_show_punycode", true);
 user_pref("pdfjs.disabled", false);         // [デフォルト: false]
 user_pref("pdfjs.enableScripting", false);  // [FF86+]
 
-/* 2624: 新しいタブボタンの中クリックでクリップボード内容から検索・URL開くのを無効化 [FF115+] */
+/* 2624: 新しいタブボタンの中クリックでクリップボード内容から検索・URL開くのを無効化 [FF115+] ***/
 user_pref("browser.tabs.searchclipboardfor.middleclick", false); // [デフォルト: false（Linux以外）]
 
 /* 2630: DLP（情報漏洩防止）エージェントによるコンテンツ解析を無効化
@@ -685,9 +687,18 @@ user_pref("browser.tabs.searchclipboardfor.middleclick", false); // [デフォ�
  *     0 = すべてのリクエストをブロック
  *     1 = すべてのリクエストで警告（ユーザーが許可/拒否を選択）
  *     2 = すべてのリクエストを許可
- * [1] https://github.com/chromium/content_analysis_sdk */
+ * [1] https://github.com/chromium/content_analysis_sdk ***/
 user_pref("browser.contentanalysis.enabled", false);       // [FF121+] [デフォルト: false]
 user_pref("browser.contentanalysis.default_result", 0);    // [FF127+] [デフォルト: 0]
+
+/* 2635: コンテンツスクリプトが注入するリソースのリファラとストレージアクセスを遮断 [FF139+]
+ * [高度] 互換性に影響する可能性があるためデフォルトでは無効 ***/
+   // user_pref("privacy.antitracking.isolateContentScriptResources", true);
+
+/* 2640: CSP Level 2 レポーティングを無効化 [FF140+]
+ * [注意] report-uri / report-to（CSP2）によるレポート送信を無効化します。
+ * セキュリティ監査や違反レポートを使う環境では無効化しないでください ***/
+user_pref("security.csp.reporting.enabled", false);
 
 
 /** DOWNLOADS（ダウンロード） **/
@@ -768,7 +779,7 @@ user_pref("privacy.clearOnShutdown_v2.historyFormDataAndDownloads", true); // �
 
 /* 2812: 上記の項目を分割して個別設定 [FF136+] ***/
 user_pref("privacy.clearOnShutdown_v2.browsingHistoryAndDownloads", true); // 閲覧履歴・DL履歴 [デフォルト: true]
-user_pref("privacy.clearOnShutdown_v2.downloads", true);                   // ダウンロード履歴
+user_pref("privacy.clearOnShutdown_v2.downloads", true);                   // ダウンロード履歴 [隠し設定]
 user_pref("privacy.clearOnShutdown_v2.formdata", true);                    // フォーム入力データ
 
 /* 2813: セッション復元データを終了時に削除（2810 が true の場合） [FF34+]
@@ -846,10 +857,15 @@ user_pref("privacy.sanitize.timeSpan", 0); // すべて削除
    予期しない挙動を示す可能性がある
    例：フレームレートはオリジンごとではなくプロセス単位でしか制御できない
 
-   バグ1826408 - フォントをシステムフォント（kBaseFonts + kLangPackFonts）に制限（Windows、Mac、一部のLinux）
+   1826408 - フォントをシステム同梱（kBaseFonts + kLangPackFonts）に制限（Windows, Mac, 一部Linux）(FF119+)
+      1928705: Android (FF134+)
       https://searchfox.org/mozilla-central/search?path=StandardFonts*.inc
-   バグ1858181 - eTLD+1（トップレベル+1ドメイン）・セッション・ウィンドウモードごとに
-      キャンバスを微妙にランダマイズ（FF120+）
+   1858181 - キャンバスを eTLD+1・セッション・ウィンドウモードごとに微妙にランダマイズ (FF120+)
+   1887682 - jsmath で fdlibm の sin/cos/tan を使用 (FF134+)
+   1978414 - その他（FF143+）
+      1954194: available screen resolution - フルスクリーンでない場合、プラットフォームごとに固定オフセット高を返す
+      1978414: hardwareConcurrency を 2 に固定（既存のRFPターゲット）
+      1977836: maxTouchPoints を 5（マルチタッチ）に固定
 ***/
 
 /* 4001: プライベートブラウジングモードでの FPP（First-Party Partitioning）を有効化 [FF114+]
@@ -924,7 +940,6 @@ user_pref("privacy.fingerprintingProtection.remoteOverrides.enabled", false);
       偽装はドキュメントの言語設定に基づき en-US のみ対応
       抑制される修飾キー：SHIFT、ALT（左右）
       ※Chromeは影響を受けない
-   1337157 - WebGLのdebug renderer infoを無効化（FF60）
    1459089 - HTTP Accept-LanguageヘッダーでOSロケールを非送信（Androidのみ）（FF62）
    1479239 - prefers-reduced-motion を "no-preference" に偽装（FF63）
    1363508 & 1826051 - Pointer Eventsの偽装・遮断（FF64, FF132）
@@ -939,7 +954,6 @@ user_pref("privacy.fingerprintingProtection.remoteOverrides.enabled", false);
    1653987 - フォント可視性をFirefox同梱フォントと「基本フォント」に限定（Win/Mac/一部Linux）（FF80）
    1461454 - MediaCapabilities における smooth=true、powerEfficient=false を偽装（FF82）
    1531915 - JavaScriptのsin/cos/tanにfdlibm（数学ライブラリ）を使用（FF93, ESR91.1）
-   1756280 - navigator.pdfViewerEnabled を常にtrueに、プラグイン情報をハードコード（FF100〜115）
    1692609 - JSのタイミング精度を16.67msに制限（以前はFF55+で100ms）（FF102）
    1422237 - color-gamut を "srgb" に偽装（FF110）
    1794628 - inverted-colors を "none" に偽装（FF114）
@@ -952,18 +966,20 @@ user_pref("privacy.fingerprintingProtection.remoteOverrides.enabled", false);
    1873382 - devicePixelRatio と CSSメディアクエリを一致させる（FF133）
       以前は FF41+ で devicePixelRatio=1 にハードコードされ、
       FF127+ では 2、CSSメディアクエリはズームレベルを devicePixelRatio=1 として偽装
+   1955425  - WebGPU subgroupMaxSize を 128 に固定（FF138）
+   1966860  - WebGL debug renderer info を偽装（FF140）※以前はFF60+で無効化
+   1781277  - persistent-storage が許可されるまで storage estimate を 10GiB に固定（FF142, ESR140.1）
+   1972600  - HTMLMediaElement の preload 用ネットワーク接続状態を偽装（FF142, ESR140.1）
+   1975851  - navigator.onLine を常に true に（FF142, ESR140.1）
+   1973265  - WebCodecs API を無効化（FF142?）
 ***/
 
-/* 4501: RFP（指紋取得防止機能）を有効化
- * 【注意】pbmode（プライベートブラウジング用）は true で、
- *          通常モードのRFPがfalseのときに適用される
- * 【設定ヒント - WEB】RFPを有効にすると、いくつかのサイト（主にCanvas関連）が正常に動作しない場合がある。
- * その場合は、URLバー経由でCanvasの例外設定を追加可能。
- * またRFP有効時には以下の副作用がある：
- *  - タイムゾーンがGMTに固定
- *  - サイトがlight（明）テーマを優先表示する傾向あり
- *  [CUSTOM] RFPは強力ですが、ウェブサイトの表示崩れやタイムゾーンの固定など、利便性への影響が大きいため、ここでは有効にしません
- */
+/* 4501: RFP（resistFingerprinting＝指紋取得防止機能）を有効化
+ * [NOTE] pbmode（プライベートウィンドウ用）が true かつ通常モード側が false の場合、pbmode の設定が適用されます
+ * [SETUP-WEB] RFPは主にCanvas周りでサイト表示が壊れる原因になり得ます。必要に応じてURLバーからCanvas例外を追加してください。
+ * [副作用] タイムゾーンがGMTに固定され、サイトはlight（明）テーマを優先表示する傾向があります
+ *   [注] FF128+ではタイムゾーン偽装先が Atlantic/Reykjavik に変更されています（実装仕様）
+ * [CUSTOM] RFPは強力ですが、表示崩れやタイムゾーン固定など利便性への影響が大きいため、ここでは無効化のままとします。 ***/
    // user_pref("privacy.resistFingerprinting", true); // [FF41+]
    // user_pref("privacy.resistFingerprinting.pbmode", true); // [FF114+]
 
@@ -998,9 +1014,9 @@ user_pref("privacy.resistFingerprinting.block_mozAddonManager", true);  // AMO�
    // user_pref("privacy.resistFingerprinting.letterboxing.dimensions", ""); // [隠し設定]
 
 /* 4505: ドメイン単位でRFPを無効化 [FF91+]
- * 【注意】有効な例: "arkenfox.github.io", "*github.io"
- *         無効な例: "https://arkenfox.github.io", "github.io", "*arkenfox.github.io"
- */
+ * [注] 値はカンマ区切り。例: "*domain1.tld, *domain2.tld"
+ * 有効例: "arkenfox.github.io", "*github.io"
+ * 無効例: "https://arkenfox.github.io", "github.io", "*arkenfox.github.io" ***/
    // user_pref("privacy.resistFingerprinting.exemptedDomains", "*.example.invalid");
 
 /* 4506: RFPによる英語表示要求プロンプトを無効化 [FF59+]
@@ -1010,6 +1026,10 @@ user_pref("privacy.resistFingerprinting.block_mozAddonManager", true);  // AMO�
  * 【関連設定】設定 > 一般 > 言語 > 表示言語の選択 > 英語を要求...
  */
 user_pref("privacy.spoof_english", 1); // RFPの英語強制表示を無効（利便性維持）
+
+/* 4507: RFP使用時に browser.startup.blankWindow をスキップ [FF136+]
+ * [デフォルト: true] 起動直後の空白ウィンドウを抑制 ***/
+   // user_pref("privacy.resistFingerprinting.skipEarlyBlankFirstPaint", true); // [デフォルト: true]
 
 /* 4510: システム色の使用を無効化（OSテーマによる指紋情報を防ぐ）
  * 【関連設定】設定 > 一般 > フォントと配色 > 配色 > システムの配色を使用
@@ -1451,7 +1471,7 @@ user_pref("privacy.trackingprotection.cryptomining.enabled", true); // [デフ�
 user_pref("privacy.trackingprotection.fingerprinting.enabled", true); // [デフォルト: true]
 
 /* 7017: Service Workerを無効化
- * - [WHY] TCP（2701）で既に隔離されており、2710で制御可能
+ * - [WHY] TCP（2701）で既に隔離されている
  */
 // user_pref("dom.serviceWorkers.enabled", false);
 
@@ -1601,16 +1621,24 @@ user_pref("browser.urlbar.showSearchTerms.enabled", false);
 
 /*** [SECTION 9999]: DEPRECATED / RENAMED（廃止または名称変更済みの設定） ***/
 
-/* ESR128.x では以下の設定が引き続き有効
- * ※ 通常のリリース版ではすでに削除・無効化されている可能性あり
- */
+/* ESR128.x では以下の設定を引き続き使用
+// [注] 上の行の * をスラッシュに置き換えると、アクティブなものを再有効化できます
 
-/*
 // FF132
-// 2617: WebChannelのホワイトリストを削除
-// [-] https://bugzilla.mozilla.org/1275612
-// user_pref("webchannel.allowObject.urlWhitelist", "");
-*/
+// 2617: WebChannel のホワイトリストを削除
+   // [-] https://bugzilla.mozilla.org/1275612
+   // user_pref("webchannel.allowObject.urlWhitelist", "");
+
+// FF140
+// 0323: ショッピング体験機能を無効化 [FF116+]
+   // [-] https://bugzilla.mozilla.org/1964845
+   // [1] https://bugzilla.mozilla.org/show_bug.cgi?id=1840156#c0
+user_pref("browser.shopping.experience2023.enabled", false); // [デフォルト: false]
+
+// 0806: URLバーのサジェストを無効化
+   // [-] https://bugzilla.mozilla.org/1959497
+user_pref("browser.urlbar.pocket.featureGate", false); // [FF116+] [デフォルト: false]
+// ***/
 
 
 
