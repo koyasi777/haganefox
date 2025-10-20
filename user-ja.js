@@ -5,8 +5,8 @@
  *****************************************************************************************
  *
  * [ Project ]    Haganefox
- * [ Version ]    1.5.0
- * [ Updated ]    2025-08-14
+ * [ Version ]    1.6.0
+ * [ Updated ]    2025-10-20
  * [ Repository ] https://github.com/koyasi777/haganefox
  * [ License ]    MIT License
  *
@@ -36,7 +36,7 @@
  * arkenfox user.js (v140)
  * https://github.com/arkenfox/user.js
  * 
- * Betterfox (v138)   
+ * Betterfox (v144)   
  * https://github.com/yokoffing/Betterfox
  *
  ****************************************************************************************/
@@ -412,7 +412,7 @@ user_pref("browser.cache.disk.enable", false);
 /* 1002: プライベートブラウジング中のメディアキャッシュをメモリ上に限定し、その最大サイズを増加させる
  * [注記] MSE（Media Source Extensions）は、プライベートブラウジング中は既にメモリ上に保存されている ***/
 user_pref("browser.privatebrowsing.forceMediaMemoryCache", true); // [FF75+]
-user_pref("media.memory_cache_max_size", 65536);
+// user_pref("media.memory_cache_max_size", 65536);
 
 /* 1003: 追加セッションデータの保存を無効化 [SETUP-CHROME]
  * フォームの内容・Cookie・POSTデータなどの保存対象サイトを制御
@@ -1673,8 +1673,12 @@ user_pref("network.http.max-connections", 1800);  // デフォルト: 900
 user_pref("network.http.max-persistent-connections-per-server", 10); // デフォルト: 6
 // 高優先リクエスト（urgent-start）用に追加接続スロットを確保
 user_pref("network.http.max-urgent-start-excessive-connections-per-host", 5); // デフォルト: 3
+// Keep-Alive が飽和時に追加接続を開くまでの待ち時間を短縮（秒）
+user_pref("network.http.request.max-start-delay", 5);
 // HTTPリクエストの発行ペーシング（レート制限）を無効化し応答性を向上
 user_pref("network.http.pacing.requests.enabled", false);
+// DNSキャッシュのエントリ数を増やす；再問い合わせを減らすが古い応答を保持しやすくなる
+user_pref("network.dnsCacheEntries", 10000);
 // DNSキャッシュの保持時間を延長（再問い合わせ最小化）
 user_pref("network.dnsCacheExpiration", 3600);
 // SSLセッショントークンのキャッシュ容量を拡大（再接続高速化）
@@ -1685,12 +1689,16 @@ user_pref("network.ssl_tokens_cache_capacity", 10240);
  *  UXとパフォーマンスの両立を図る。RAM/VRAMが潤沢な環境向け。
  * 【出典】Betterfox, Skia/Canvas docs, media stack tuning
  *   [NOTE] RAM/VRAMを潤沢に利用しUX向上を図る。低スペック環境では注意。 */
-user_pref("gfx.canvas.accelerated.cache-size", 512);         // GPU canvas キャッシュ上限（MB）
-user_pref("gfx.content.skia-font-cache-size", 20);           // Skia フォント描画キャッシュ（MB）
-user_pref("media.memory_cache_max_size", 65536);             // メディア用RAMキャッシュ上限（KB）
-user_pref("media.cache_readahead_limit", 7200);              // 先読み最大量（KB）
-user_pref("media.cache_resume_threshold", 3600);             // バッファ再開時の読み込み閾値（KB）
-user_pref("image.mem.decode_bytes_at_a_time", 32768);        // 画像デコード単位（バイト）
+user_pref("gfx.canvas.accelerated.cache-items", 32768);        // GPUアクセラレートCanvasのキャッシュ項目数の上限（増やすと再ラスタライズが減る場合あり）
+user_pref("gfx.canvas.accelerated.cache-size", 4096);          // GPU Canvasキャッシュ総量（MB）
+user_pref("webgl.max-size", 16384);                            // WebGLのリソース/テクスチャ寸法の上限（ピクセル）；大きすぎるとVRAM消費増
+user_pref("gfx.content.skia-font-cache-size", 32);             // Skiaフォントキャッシュ容量（MB）
+user_pref("media.memory_cache_max_size", 262144);              // メディア用RAMキャッシュ上限（KB）
+user_pref("media.memory_caches_combined_limit_kb", 1048576);   // メディア系メモリキャッシュの合計上限（KB）；各キャッシュ群の総量に対する天井値
+user_pref("media.cache_readahead_limit", 600);                 // メディアの先読み上限（KB）
+user_pref("media.cache_resume_threshold", 300);                // バッファがこの値に達したら再生を再開する閾値（KB）
+user_pref("image.cache.size", 10485760);                       // 画像キャッシュ容量（バイト）— 10,485,760 ≈ 10MiB
+user_pref("image.mem.decode_bytes_at_a_time", 65536);          // 画像デコードで一度に処理するバイト数（大きいほど割り込みが減るがメインスレッド負荷増）
 
 /* [UI/UX] ユーザー操作性とインターフェース体験向上
  * 【目的】右クリック機能、フォーム挙動、検索UI、貼り付け、PDF等の表示動作を微調整し
@@ -1715,6 +1723,11 @@ user_pref("signon.privateBrowsingCapture.enabled", false);
 // 個別テレメトリも既に無効。一応明記。
 user_pref("datareporting.usage.uploadEnabled", false);
 
+/* [Privacy/Security] Enhanced Tracking Protection の例外
+ * [PURPOSE] ETPの「ベースライン（重大な破綻回避）」例外の可否を制御し、主要なサイト機能の互換性を確保する。 */
+// Enhanced Tracking Protection（ETP）のベースライン許可リストを有効化（重大なサイト破綻を避けるための限定的な例外を適用）
+user_pref("privacy.trackingprotection.allow_list.baseline.enabled", true);
+
 /* [Privacy] BeaconDBを位置情報プロバイダとして使用
  * 【目的】Mozilla Location Services (MLS) の代替として、BeaconDB (https://beacondb.net) を使用
  * - オープンかつプライバシー重視のネットワークジオロケーションサービス
@@ -1725,6 +1738,15 @@ user_pref("datareporting.usage.uploadEnabled", false);
  *  さらに `user_pref("geo.enabled", true);` を追加する必要があります。
  */
 // user_pref("geo.provider.network.url", "https://api.beacondb.net/v1/geolocate");
+
+/* [AI/ML] 製品内のML機能と関連UIを無効化
+ * [PURPOSE] Firefoxの端末内MLランタイム、AI Chat（サイドバー／メニュー）、
+ *           AIによるスマートタブグループ、AIリンクプレビュー（要約カード）を無効化。 */
+user_pref("browser.ml.enable", false);                 // 端末内MLランタイムのマスタースイッチ。機能ごとの個別トグルも併用される場合あり。
+user_pref("browser.ml.chat.enabled", false);           // AIチャット機能（サイドバー統合）を無効化。
+user_pref("browser.ml.chat.menu", false);              // AIチャットのメニュー/エントリをUIから非表示にする。
+user_pref("browser.tabs.groups.smart.enabled", false); // AI補助の「スマート」タブグループ提案を無効化（タブグループそのものの有効/無効とは別）。
+user_pref("browser.ml.linkPreview.enabled", false);    // AI要約付きリンクプレビューを無効化。
 
 /* [Betterfoxからの導入] --- End --- */
 
