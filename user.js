@@ -302,7 +302,7 @@ user_pref("browser.urlbar.trending.featureGate", false);
 /* 0806: disable urlbar suggestions ***/
 user_pref("browser.urlbar.addons.featureGate", false);         // addons [FF115+]
 user_pref("browser.urlbar.amp.featureGate", false);           // [FF141+] adMarketplace
-user_pref("browser.urlbar.fakespot.featureGate", false)       // Fakespot [FF130+] [DEFAULT: false]
+user_pref("browser.urlbar.fakespot.featureGate", false);       // Fakespot [FF130+] [DEFAULT: false]
 user_pref("browser.urlbar.mdn.featureGate", false);           // MDN [FF117+]
 user_pref("browser.urlbar.weather.featureGate", false);       // [FF108+]
 user_pref("browser.urlbar.wikipedia.featureGate", false);     // [FF141+]
@@ -958,7 +958,7 @@ user_pref("privacy.spoof_english", 1);
 
 /* 4510: disable using system colors
  * [SETTING] General>Language and Appearance>Fonts and Colors>Colors>Use system colors ***/
-user_pref("browser.display.use_system_colors", false);  // [[DEFAULT: false NON-WINDOWS]
+user_pref("browser.display.use_system_colors", false);  // [DEFAULT: false NON-WINDOWS]
 
 /* 4511: disable using system accent colors ***/
 user_pref("widget.non-native-theme.use-theme-accent", false); // [DEFAULT: false NON-WINDOWS]
@@ -1085,7 +1085,7 @@ user_pref("browser.sessionstore.resume_from_crash", true);
 /* 5019: disable page thumbnail collection ***/
    // user_pref("browser.pagethumbnails.capturing_disabled", true);
 
-/* 5020: disable Windows native notifications and use app notications instead [FF111+] [WINDOWS] ***/
+/* 5020: disable Windows native notifications and use app notifications instead [FF111+] [WINDOWS] ***/
    // user_pref("alerts.useSystemBackend.windows.notificationserver.enabled", false);
 
 /* 5021: disable location bar using search
