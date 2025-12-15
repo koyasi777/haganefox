@@ -5,8 +5,8 @@
  *****************************************************************************************
  *
  * [ Project ]    Haganefox
- * [ Version ]    1.6.0
- * [ Updated ]    2025-10-20
+ * [ Version ]    1.6.1
+ * [ Updated ]    2025-12-15
  * [ Repository ] https://github.com/koyasi777/haganefox
  * [ License ]    MIT License
  *
@@ -37,7 +37,7 @@
  * arkenfox user.js (v140)
  * https://github.com/arkenfox/user.js
  * 
- * Betterfox (v144)   
+ * Betterfox (v146)   
  * https://github.com/yokoffing/Betterfox
  *
  ****************************************************************************************/
@@ -1536,6 +1536,7 @@ user_pref("network.ssl_tokens_cache_capacity", 10240);
  *   Targeted at environments with ample RAM/VRAM.
  * [SOURCE] Betterfox, Skia/Canvas docs, media stack tuning
  *   [NOTE] These settings enhance UX by aggressively utilizing memory. Use caution on low-end systems. */
+user_pref("gfx.webrender.layer-compositor", true);              // Enable WebRender layer compositor (may improve compositing path on some systems; revert if visual glitches occur)
 user_pref("gfx.canvas.accelerated.cache-items", 32768);        // Max number of cached GPU-accelerated Canvas items (higher can reduce re-rasterization)
 user_pref("gfx.canvas.accelerated.cache-size", 4096);         // GPU canvas cache size (MB)
 user_pref("webgl.max-size", 16384);                            // Upper bound for WebGL resource/texture dimensions (pixels); very large values can increase VRAM use
@@ -1571,6 +1572,10 @@ user_pref("datareporting.usage.uploadEnabled", false);
 /* [Privacy/Security] Enhanced Tracking Protection exceptions
  * [PURPOSE] Control ETP’s built-in allow-lists that preserve core site functionality. */
 user_pref("privacy.trackingprotection.allow_list.baseline.enabled", true); // Enable “baseline” web-compatibility exceptions so essential site features keep working (convenience tier is separate)
+
+/* [Security] HTTPS-Only mode error-page UX
+ * [PURPOSE] Offer user suggestions on the HTTPS-Only error page (e.g., alternative hostnames like www). */
+user_pref("dom.security.https_only_mode_error_page_user_suggestions", true);
 
 /* [Privacy] Use BeaconDB as location provider
  * [PURPOSE] Replace Mozilla Location Services (MLS) with BeaconDB (https://beacondb.net),
