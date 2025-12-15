@@ -5,8 +5,8 @@
  *****************************************************************************************
  *
  * [ Project ]    Haganefox
- * [ Version ]    1.6.0
- * [ Updated ]    2025-10-20
+ * [ Version ]    1.6.1
+ * [ Updated ]    2025-12-15
  * [ Repository ] https://github.com/koyasi777/haganefox
  * [ License ]    MIT License
  *
@@ -36,7 +36,7 @@
  * arkenfox user.js (v140)
  * https://github.com/arkenfox/user.js
  * 
- * Betterfox (v144)   
+ * Betterfox (v146)   
  * https://github.com/yokoffing/Betterfox
  *
  ****************************************************************************************/
@@ -1689,6 +1689,7 @@ user_pref("network.ssl_tokens_cache_capacity", 10240);
  *  UXとパフォーマンスの両立を図る。RAM/VRAMが潤沢な環境向け。
  * 【出典】Betterfox, Skia/Canvas docs, media stack tuning
  *   [NOTE] RAM/VRAMを潤沢に利用しUX向上を図る。低スペック環境では注意。 */
+user_pref("gfx.webrender.layer-compositor", true);             // WebRenderのレイヤー合成経路を有効化（環境によって描画/合成が改善する場合。表示崩れ等が出たら戻す）
 user_pref("gfx.canvas.accelerated.cache-items", 32768);        // GPUアクセラレートCanvasのキャッシュ項目数の上限（増やすと再ラスタライズが減る場合あり）
 user_pref("gfx.canvas.accelerated.cache-size", 4096);          // GPU Canvasキャッシュ総量（MB）
 user_pref("webgl.max-size", 16384);                            // WebGLのリソース/テクスチャ寸法の上限（ピクセル）；大きすぎるとVRAM消費増
@@ -1727,6 +1728,10 @@ user_pref("datareporting.usage.uploadEnabled", false);
  * [PURPOSE] ETPの「ベースライン（重大な破綻回避）」例外の可否を制御し、主要なサイト機能の互換性を確保する。 */
 // Enhanced Tracking Protection（ETP）のベースライン許可リストを有効化（重大なサイト破綻を避けるための限定的な例外を適用）
 user_pref("privacy.trackingprotection.allow_list.baseline.enabled", true);
+
+/* [Security] HTTPS-Only モードのエラーページ提案表示
+ * 【目的】HTTPS-Only の接続失敗時、エラーページで代替案（例：www 付き等）の提案を表示して復帰しやすくする。 */
+user_pref("dom.security.https_only_mode_error_page_user_suggestions", true);
 
 /* [Privacy] BeaconDBを位置情報プロバイダとして使用
  * 【目的】Mozilla Location Services (MLS) の代替として、BeaconDB (https://beacondb.net) を使用
