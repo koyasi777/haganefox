@@ -1510,13 +1510,12 @@ user_pref("full-screen-api.transition-duration.enter", "0 0");
 user_pref("full-screen-api.transition-duration.leave", "0 0");
 user_pref("full-screen-api.warning.timeout", 0);
 
-/* [Performance/GFX] Base Hardware Acceleration & Media Caching
- * [PURPOSE] Enable WebRender layer compositing and allocate standard RAM cache for media to reduce disk I/O.
+/* [Performance/GFX] Base Hardware Acceleration
+ * [PURPOSE] Enable WebRender layer compositing for GPU offloading.
  * [SOURCE] Betterfox (Securefox/Peskyfox baseline)
- * [NOTE] Aggressive manual memory/cache overrides have been removed to favor Gecko's native dynamic memory management. Safely applicable to standard environments. */
+ * [NOTE] All manual memory/cache overrides have been removed to favor Gecko's native dynamic memory management. Safely applicable to standard environments. */
 user_pref("gfx.canvas.accelerated.cache-size", 256); // Reset pref to mitigate specific rendering glitches (Ref: Betterfox #460)
 user_pref("gfx.webrender.layer-compositor", true);   // Enable WebRender layer compositor for GPU offloading
-user_pref("media.memory_cache_max_size", 65536);     // RAM cache for media (64MB)
 
 /* [UI/UX] Enhance usability and interface interaction
  * [PURPOSE] Refine right-click behavior, form interaction, search UI, clipboard, PDF handling, etc.
