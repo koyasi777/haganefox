@@ -5,8 +5,8 @@
  *****************************************************************************************
  *
  * [ Project ]    Haganefox
- * [ Version ]    1.6.1
- * [ Updated ]    2025-12-15
+ * [ Version ]    1.6.2
+ * [ Updated ]    2026-03-12
  * [ Repository ] https://github.com/koyasi777/haganefox
  * [ License ]    MIT License
  *
@@ -36,7 +36,7 @@
  * arkenfox user.js (v140)
  * https://github.com/arkenfox/user.js
  * 
- * Betterfox (v146)   
+ * Betterfox (v148)   
  * https://github.com/yokoffing/Betterfox
  *
  ****************************************************************************************/
@@ -412,7 +412,7 @@ user_pref("browser.cache.disk.enable", false);
 /* 1002: プライベートブラウジング中のメディアキャッシュをメモリ上に限定し、その最大サイズを増加させる
  * [注記] MSE（Media Source Extensions）は、プライベートブラウジング中は既にメモリ上に保存されている ***/
 user_pref("browser.privatebrowsing.forceMediaMemoryCache", true); // [FF75+]
-// user_pref("media.memory_cache_max_size", 65536);
+user_pref("media.memory_cache_max_size", 65536);
 
 /* 1003: 追加セッションデータの保存を無効化 [SETUP-CHROME]
  * フォームの内容・Cookie・POSTデータなどの保存対象サイトを制御
@@ -1663,43 +1663,12 @@ user_pref("full-screen-api.transition-duration.enter", "0 0");
 user_pref("full-screen-api.transition-duration.leave", "0 0");
 user_pref("full-screen-api.warning.timeout", 0);
 
-/* [Network Performance] 高速化と低レイテンシのためのチューニング
- * 【目的】FirefoxのHTTPスタック/SSL/DNS挙動を最適化し、ページ読み込みの体感速度を向上
- * 【出典】Betterfox, `about:networking`, mozilla dev docs
- *   [NOTE] 高速回線・モダンなハードウェア環境を想定。リソース使用量は増加する。 */
-// 同時HTTP接続数の上限を引き上げ（マルチタブ環境向け）
-user_pref("network.http.max-connections", 1800);  // デフォルト: 900
-// 1サーバーへの持続的接続数の上限を引き上げ（Keep-Alive強化）
-user_pref("network.http.max-persistent-connections-per-server", 10); // デフォルト: 6
-// 高優先リクエスト（urgent-start）用に追加接続スロットを確保
-user_pref("network.http.max-urgent-start-excessive-connections-per-host", 5); // デフォルト: 3
-// Keep-Alive が飽和時に追加接続を開くまでの待ち時間を短縮（秒）
-user_pref("network.http.request.max-start-delay", 5);
-// HTTPリクエストの発行ペーシング（レート制限）を無効化し応答性を向上
-user_pref("network.http.pacing.requests.enabled", false);
-// DNSキャッシュのエントリ数を増やす；再問い合わせを減らすが古い応答を保持しやすくなる
-user_pref("network.dnsCacheEntries", 10000);
-// DNSキャッシュの保持時間を延長（再問い合わせ最小化）
-user_pref("network.dnsCacheExpiration", 3600);
-// SSLセッショントークンのキャッシュ容量を拡大（再接続高速化）
-user_pref("network.ssl_tokens_cache_capacity", 10240);
-
-/* [Performance/GFX] 描画およびメディア関連キャッシュの最適化
- * 【目的】GPU描画・フォント処理・メディア再生・画像デコードの最適化により
- *  UXとパフォーマンスの両立を図る。RAM/VRAMが潤沢な環境向け。
- * 【出典】Betterfox, Skia/Canvas docs, media stack tuning
- *   [NOTE] RAM/VRAMを潤沢に利用しUX向上を図る。低スペック環境では注意。 */
-user_pref("gfx.webrender.layer-compositor", true);             // WebRenderのレイヤー合成経路を有効化（環境によって描画/合成が改善する場合。表示崩れ等が出たら戻す）
-user_pref("gfx.canvas.accelerated.cache-items", 32768);        // GPUアクセラレートCanvasのキャッシュ項目数の上限（増やすと再ラスタライズが減る場合あり）
-user_pref("gfx.canvas.accelerated.cache-size", 4096);          // GPU Canvasキャッシュ総量（MB）
-user_pref("webgl.max-size", 16384);                            // WebGLのリソース/テクスチャ寸法の上限（ピクセル）；大きすぎるとVRAM消費増
-user_pref("gfx.content.skia-font-cache-size", 32);             // Skiaフォントキャッシュ容量（MB）
-user_pref("media.memory_cache_max_size", 262144);              // メディア用RAMキャッシュ上限（KB）
-user_pref("media.memory_caches_combined_limit_kb", 1048576);   // メディア系メモリキャッシュの合計上限（KB）；各キャッシュ群の総量に対する天井値
-user_pref("media.cache_readahead_limit", 600);                 // メディアの先読み上限（KB）
-user_pref("media.cache_resume_threshold", 300);                // バッファがこの値に達したら再生を再開する閾値（KB）
-user_pref("image.cache.size", 10485760);                       // 画像キャッシュ容量（バイト）— 10,485,760 ≈ 10MiB
-user_pref("image.mem.decode_bytes_at_a_time", 65536);          // 画像デコードで一度に処理するバイト数（大きいほど割り込みが減るがメインスレッド負荷増）
+/* [Performance/GFX] 基本的なハードウェアアクセラレーション
+ * [目的] GPUオフロードのためにWebRenderレイヤー合成を有効化する。
+ * [ソース] Betterfox (Securefox/Peskyfox ベースライン)
+ * [注記] Gecko ネイティブの動的メモリ管理を優先するため、全ての手動でのメモリ/キャッシュ上書き設定を削除。標準的な環境に安全に適用可能。 */
+user_pref("gfx.canvas.accelerated.cache-size", 256); // 特定の描画バグを軽減するための設定リセット (参照: Betterfox #460)
+user_pref("gfx.webrender.layer-compositor", true);   // GPUオフロードのためにWebRenderレイヤー合成を有効化
 
 /* [UI/UX] ユーザー操作性とインターフェース体験向上
  * 【目的】右クリック機能、フォーム挙動、検索UI、貼り付け、PDF等の表示動作を微調整し
@@ -1747,6 +1716,7 @@ user_pref("dom.security.https_only_mode_error_page_user_suggestions", true);
 /* [AI/ML] 製品内のML機能と関連UIを無効化
  * [PURPOSE] Firefoxの端末内MLランタイム、AI Chat（サイドバー／メニュー）、
  *           AIによるスマートタブグループ、AIリンクプレビュー（要約カード）を無効化。 */
+user_pref("browser.ai.control.default", "blocked");    // Mozilla統合AIサービスのグローバルポリシー状態。AI機能(例: AI翻訳)の読み込みを防ぎ、about:preferences#aiから項目を削除する。
 user_pref("browser.ml.enable", false);                 // 端末内MLランタイムのマスタースイッチ。機能ごとの個別トグルも併用される場合あり。
 user_pref("browser.ml.chat.enabled", false);           // AIチャット機能（サイドバー統合）を無効化。
 user_pref("browser.ml.chat.menu", false);              // AIチャットのメニュー/エントリをUIから非表示にする。
