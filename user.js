@@ -5,8 +5,8 @@
  *****************************************************************************************
  *
  * [ Project ]    Haganefox
- * [ Version ]    1.6.1
- * [ Updated ]    2025-12-15
+ * [ Version ]    1.6.2
+ * [ Updated ]    2026-03-12
  * [ Repository ] https://github.com/koyasi777/haganefox
  * [ License ]    MIT License
  *
@@ -37,7 +37,7 @@
  * arkenfox user.js (v140)
  * https://github.com/arkenfox/user.js
  * 
- * Betterfox (v146)   
+ * Betterfox (v148)   
  * https://github.com/yokoffing/Betterfox
  *
  ****************************************************************************************/
@@ -391,7 +391,7 @@ user_pref("browser.cache.disk.enable", false);
 /* 1002: set media cache in Private Browsing to in-memory and increase its maximum size
  * [NOTE] MSE (Media Source Extensions) are already stored in-memory in PB ***/
 user_pref("browser.privatebrowsing.forceMediaMemoryCache", true); // [FF75+]
-// user_pref("media.memory_cache_max_size", 65536);
+user_pref("media.memory_cache_max_size", 65536);
 
 /* 1003: disable storing extra session data [SETUP-CHROME]
  * define on which sites to save extra session data such as form content, cookies and POST data
@@ -1510,43 +1510,13 @@ user_pref("full-screen-api.transition-duration.enter", "0 0");
 user_pref("full-screen-api.transition-duration.leave", "0 0");
 user_pref("full-screen-api.warning.timeout", 0);
 
-/* [Network Performance] Tuning for faster loading and lower latency
- * [PURPOSE] Optimize HTTP stack, SSL, and DNS behavior to improve perceived page loading speed
- * [SOURCE] Betterfox, `about:networking`, Mozilla developer docs
- *   [NOTE] Intended for high-speed networks and modern hardware. May increase resource usage. */
-// Increase maximum concurrent HTTP connections (ideal for multi-tab usage)
-user_pref("network.http.max-connections", 1800);  // Default: 900
-// Increase persistent connections per server (enhances Keep-Alive behavior)
-user_pref("network.http.max-persistent-connections-per-server", 10); // Default: 6
-// Reserve additional slots for urgent-start requests
-user_pref("network.http.max-urgent-start-excessive-connections-per-host", 5); // Default: 3
-// Lower queueing delay before opening extra connections when keep-alives are saturated (seconds)
-user_pref("network.http.request.max-start-delay", 5);
-// Disable HTTP request pacing (rate limiting) to improve responsiveness
-user_pref("network.http.pacing.requests.enabled", false);
-// Grow DNS cache capacity (entries); reduces repeat lookups but may retain stale answers longer
-user_pref("network.dnsCacheEntries", 10000);
-// Extend DNS cache lifetime to minimize re-queries
-user_pref("network.dnsCacheExpiration", 3600);
-// Increase SSL session token cache capacity for faster reconnects
-user_pref("network.ssl_tokens_cache_capacity", 10240);
-
-/* [Performance/GFX] Optimization of rendering and media-related caches
- * [PURPOSE] Balance UX and performance by tuning GPU rendering, font processing, media playback, and image decoding.
- *   Targeted at environments with ample RAM/VRAM.
- * [SOURCE] Betterfox, Skia/Canvas docs, media stack tuning
- *   [NOTE] These settings enhance UX by aggressively utilizing memory. Use caution on low-end systems. */
-user_pref("gfx.webrender.layer-compositor", true);              // Enable WebRender layer compositor (may improve compositing path on some systems; revert if visual glitches occur)
-user_pref("gfx.canvas.accelerated.cache-items", 32768);        // Max number of cached GPU-accelerated Canvas items (higher can reduce re-rasterization)
-user_pref("gfx.canvas.accelerated.cache-size", 4096);         // GPU canvas cache size (MB)
-user_pref("webgl.max-size", 16384);                            // Upper bound for WebGL resource/texture dimensions (pixels); very large values can increase VRAM use
-user_pref("gfx.content.skia-font-cache-size", 32);           // Skia font cache size (MB)
-user_pref("media.memory_cache_max_size", 262144);             // RAM cache for media (KB)
-user_pref("media.memory_caches_combined_limit_kb", 1048576);   // Combined cap for all media memory caches (KB); a global ceiling across media cache pools
-user_pref("media.cache_readahead_limit", 600);              // Media read-ahead limit (KB)
-user_pref("media.cache_resume_threshold", 300);            // Buffer resume threshold (KB)
-user_pref("image.cache.size", 10485760);                       // Image cache size (bytes) — e.g., 10,485,760 = ~10 MiB
-user_pref("image.mem.decode_bytes_at_a_time", 65536);          // Bytes decoded per chunk; larger = fewer yields but more main-thread work
+/* [Performance/GFX] Base Hardware Acceleration & Media Caching
+ * [PURPOSE] Enable WebRender layer compositing and allocate standard RAM cache for media to reduce disk I/O.
+ * [SOURCE] Betterfox (Securefox/Peskyfox baseline)
+ * [NOTE] Aggressive manual memory/cache overrides have been removed to favor Gecko's native dynamic memory management. Safely applicable to standard environments. */
+user_pref("gfx.canvas.accelerated.cache-size", 256); // Reset pref to mitigate specific rendering glitches (Ref: Betterfox #460)
+user_pref("gfx.webrender.layer-compositor", true);   // Enable WebRender layer compositor for GPU offloading
+user_pref("media.memory_cache_max_size", 65536);     // RAM cache for media (64MB)
 
 /* [UI/UX] Enhance usability and interface interaction
  * [PURPOSE] Refine right-click behavior, form interaction, search UI, clipboard, PDF handling, etc.
@@ -1591,6 +1561,7 @@ user_pref("dom.security.https_only_mode_error_page_user_suggestions", true);
 /* [AI/ML] Disable in-product ML features and related UI
  * [PURPOSE] Turn off Firefox's local ML runtime, AI Chat sidebar/menu, AI-powered Smart Tab Groups,
  *           and AI Link Previews (summary cards). */
+user_pref("browser.ai.control.default", "blocked");    // Global policy state for Mozilla's integrated AI services. Prevents AI features (e.g., AI Translations) from loading and removes them from about:preferences#ai.
 user_pref("browser.ml.enable", false);                 // Master switch for Firefox’s on-device ML runtime (about:inference). Some features also need their own toggles off.
 user_pref("browser.ml.chat.enabled", false);           // Disable the AI Chat feature (sidebar integration and plumbing).
 user_pref("browser.ml.chat.menu", false);              // Hide AI Chat menu/entry points in the UI (e.g., context/toolbar menus).
