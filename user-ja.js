@@ -6,7 +6,7 @@
  *
  * [ Project ]    Haganefox
  * [ Version ]    1.6.2
- * [ Updated ]    2026-03-12
+ * [ Updated ]    2026-05-24
  * [ Repository ] https://github.com/koyasi777/haganefox
  * [ License ]    MIT License
  *
@@ -36,7 +36,7 @@
  * arkenfox user.js (v140)
  * https://github.com/arkenfox/user.js
  * 
- * Betterfox (v148)   
+ * Betterfox (v150)   
  * https://github.com/yokoffing/Betterfox
  *
  ****************************************************************************************/
@@ -1662,13 +1662,6 @@ user_pref("extensions.pocket.enabled", false);
 user_pref("full-screen-api.transition-duration.enter", "0 0");
 user_pref("full-screen-api.transition-duration.leave", "0 0");
 user_pref("full-screen-api.warning.timeout", 0);
-
-/* [Performance/GFX] 基本的なハードウェアアクセラレーション
- * [目的] GPUオフロードのためにWebRenderレイヤー合成を有効化する。
- * [ソース] Betterfox (Securefox/Peskyfox ベースライン)
- * [注記] Gecko ネイティブの動的メモリ管理を優先するため、全ての手動でのメモリ/キャッシュ上書き設定を削除。標準的な環境に安全に適用可能。 */
-user_pref("gfx.canvas.accelerated.cache-size", 256); // 特定の描画バグを軽減するための設定リセット (参照: Betterfox #460)
-user_pref("gfx.webrender.layer-compositor", true);   // GPUオフロードのためにWebRenderレイヤー合成を有効化
 
 /* [UI/UX] ユーザー操作性とインターフェース体験向上
  * 【目的】右クリック機能、フォーム挙動、検索UI、貼り付け、PDF等の表示動作を微調整し
