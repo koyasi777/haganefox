@@ -5,7 +5,7 @@
  *****************************************************************************************
  *
  * [ Project ]    Haganefox
- * [ Version ]    1.6.2
+ * [ Version ]    1.6.5
  * [ Updated ]    2026-05-24
  * [ Repository ] https://github.com/koyasi777/haganefox
  * [ License ]    MIT License
@@ -33,7 +33,7 @@
  *****************************************************************************************
  *
  * [ References ]
- * arkenfox user.js (v140)
+ * arkenfox user.js (v144)
  * https://github.com/arkenfox/user.js
  * 
  * Betterfox (v150)   
@@ -159,10 +159,13 @@ user_pref("network.connectivity-service.enabled", false);
    他の実在するハッシュと混ぜて匿名性を保っている。
    Firefoxは識別子の除去などを行っており、SBv4（FF57+）以降ではCookieも使用されない。
 
+   FF147以降では、Oblivious HTTP [5] と SBv5 のローカルリストモード [6] を組み込んだ SBv5 が使用される
+
    [1] https://feeding.cloud.geek.nz/posts/how-safe-browsing-works-in-firefox/
    [2] https://wiki.mozilla.org/Security/Safe_Browsing
    [3] https://support.mozilla.org/kb/how-does-phishing-and-malware-protection-work
-   [4] https://educatedguesswork.org/posts/safe-browsing-privacy/
+   [5] https://developers.google.com/safe-browsing/reference
+   [6] https://developers.google.com/safe-browsing/reference/Local.List.Mode
 ***/
 
 /* 0401: Safe Browsing (安全閲覧保護) を無効化
@@ -217,10 +220,6 @@ user_pref("network.prefetch-next", false);
  * [1] https://developer.mozilla.org/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control ***/
 user_pref("network.dns.disablePrefetch", true);
 user_pref("network.dns.disablePrefetchFromHTTPS", true);
-
-/* 0603: プレディクター／プリフェッチ機能を無効化 ***/
-user_pref("network.predictor.enabled", false);
-user_pref("network.predictor.enable-prefetch", false); // [FF48+] [デフォルト: false]
 
 /* 0604: リンクにマウスオーバーしただけでサーバーに接続する動作を無効化
  * [1] https://news.slashdot.org/story/15/08/14/2321202/how-to-quash-firefoxs-silent-requests ***/
@@ -298,7 +297,7 @@ user_pref("network.gio.supported-protocols", ""); // [隠し設定] [デフォ�
  * [1] https://bugzilla.mozilla.org/1348275 ***/
 user_pref("browser.urlbar.speculativeConnect.enabled", false);
 
-/* 0802: ロケーションバーのコンテキストサジェストを無効化
+/* 8502: ロケーションバーのコンテキストサジェストを無効化
  * [注] UI制御は `.enabled` 設定による
  * [設定] 検索 > アドレスバー > サジェスト元
  * [1] https://blog.mozilla.org/data/2021/09/15/data-and-firefox-suggest/ ***/
@@ -320,11 +319,13 @@ user_pref("browser.urlbar.trending.featureGate", false);
 /* 0806: URLバーの各種機能別サジェストを無効化 ***/
 user_pref("browser.urlbar.addons.featureGate", false);       // 拡張機能 [FF115+]
 user_pref("browser.urlbar.amp.featureGate", false);          // adMarketplace（広告）[FF141+]
-user_pref("browser.urlbar.fakespot.featureGate", false);     // Fakespot [FF130+] [デフォルト: false]
+user_pref("browser.urlbar.importantDates.featureGate", false); // [FF143+] 重要な日付
+user_pref("browser.urlbar.market.featureGate", false); // [FF143+] 株式市場
 user_pref("browser.urlbar.mdn.featureGate", false);          // MDN [FF117+]
 user_pref("browser.urlbar.weather.featureGate", false);      // 天気情報 [FF108+]
 user_pref("browser.urlbar.wikipedia.featureGate", false);    // Wikipedia [FF141+]
 user_pref("browser.urlbar.yelp.featureGate", false);         // Yelp [FF124+]
+user_pref("browser.urlbar.yelpRealtime.featureGate", false); // [FF144+] Yelpのリアルタイム候補
 
 /* 0807: クリップボードの内容を基にしたサジェストを無効化 [FF118+] ***/
    // user_pref("browser.urlbar.clipboard.featureGate", false);
@@ -369,7 +370,7 @@ user_pref("browser.search.separatePrivateDefault.ui.enabled", true); // [FF71+]
 
 
 
-/*** [SECTION 0900]: パスワード関連設定
+/*** [SECTION 0900]: パスワード/パスキー関連設定
    [1] https://support.mozilla.org/kb/use-primary-password-protect-stored-logins-and-pas
 ***/
 
@@ -399,6 +400,10 @@ user_pref("network.auth.subresource-http-auth-allow", 1);
 /* 0907: Microsoftサイトでの自動認証（macOS Entra SSO）を無効化 [FF131+] [MAC]
  * macOSでは企業管理デバイスのみSSOが機能 ***/
    // user_pref("network.http.microsoft-entra-sso.enabled", false); // [デフォルト: false]
+
+/* 0910: Passkeys における direct attestation を許可しない [FF144+]
+   // [1] https://bugzilla.mozilla.org/show_bug.cgi?id=1981587 ***/
+user_pref("security.webauthn.always_allow_direct_attestation", false); // [DEFAULT: false]
 
 
 
@@ -454,7 +459,7 @@ user_pref("browser.sessionstore.privacy_level", 2);
  *   安全でない再ネゴシエーションが行われないことを保証できます**
  * - [SETUP-WEB] 接続エラー（SSL_ERROR_UNSAFE_NEGOTIATION）になった場合でも、
  *   それが本当に無視する価値のあるサイトかどうかを検討してください
- * - [STATS] SSL Labs（2024年5月時点）では上位サイトの99.7%以上が
+ * - [STATS] SSL Labs（2025年11月時点）では上位サイトの約99.85%が
  *   安全な再ネゴシエーションに対応済みと報告されています [4]
  * [1] https://wiki.mozilla.org/Security:Renegotiation
  * [2] https://datatracker.ietf.org/doc/html/rfc5746
@@ -472,32 +477,6 @@ user_pref("security.ssl.require_safe_negotiation", true);
 user_pref("security.tls.enable_0rtt_data", false);
 
 
-/** OCSP（オンライン証明書ステータスプロトコル）
- * [1] https://scotthelme.co.uk/revocation-is-broken/
- * [2] https://blog.mozilla.org/security/2013/07/29/ocsp-stapling-in-firefox/
- ***/
-
-/* 1211: OCSPフェッチ（証明書の有効性確認）を強制する
- * 0=無効, 1=有効（デフォルト）, 2=EV証明書のみ
- * OCSP（Staplingでない）は、訪問したサイト情報を認証局（CA）に漏らす可能性がある
- * → セキュリティ（確認）とプライバシー（CAへの情報漏洩）のトレードオフ
- * [注] この設定はOCSPフェッチのみ制御。OCSPステープリングには影響しない
- * [設定] プライバシーとセキュリティ > セキュリティ > 証明書 > OCSPレスポンダーに問い合わせる
- * [1] https://en.wikipedia.org/wiki/Ocsp ***/
-user_pref("security.OCSP.enabled", 1); // [デフォルト: 1]
-
-/* 1212: OCSPフェッチ失敗時（ステープルなし）に接続を強制終了（ハードフェイル）にする
- * [SETUP-WEB] エラー例: SEC_ERROR_OCSP_SERVER_ERROR / SEC_ERROR_OCSP_UNAUTHORIZED_REQUEST
- * CAに到達できず検証できない場合、通常は接続継続（ソフトフェイル）
- * → true にすると、代わりに接続を中断（ハードフェイル）
- * 理由: フェッチ失敗時に継続しても証明書の有効性を確認できず、
- * 攻撃中（例: OCSPサーバーの悪意あるブロック）である可能性すらある
- * [1] https://blog.mozilla.org/security/2013/07/29/ocsp-stapling-in-firefox/
- * [2] https://www.imperialviolet.org/2014/04/19/revchecking.html
- * [3] https://letsencrypt.org/2024/12/05/ending-ocsp/ ***/
-user_pref("security.OCSP.require", true);
-
-
 /** CERTS / HPKP（HTTP公開鍵ピンニング） ***/
 
 /* 1223: 厳格なPKP（公開鍵ピンニング）を有効化
@@ -511,9 +490,10 @@ user_pref("security.cert_pinning.enforcement_level", 2);
  * 2 = 「失効」および「未失効」の結果を強制適用
  * 3 = 「未失効」のみ強制適用、「失効」はOCSPに委任（デフォルト）
  * [1] https://bugzilla.mozilla.org/buglist.cgi?bug_id=1429800,1670985,1753071
- * [2] https://blog.mozilla.org/security/tag/crlite/ ***/
-user_pref("security.remote_settings.crlite_filters.enabled", true); // [デフォルト: true FF137+]
-user_pref("security.pki.crlite_mode", 2);
+ * [2] https://blog.mozilla.org/security/tag/crlite/
+ * [3] https://hacks.mozilla.org/2025/08/crlite-fast-private-and-comprehensive-certificate-revocation-checking-in-firefox/ ***/
+user_pref("security.remote_settings.crlite_filters.enabled", true); // [DEFAULT: true]
+user_pref("security.pki.crlite_mode", 2); // [DEFAULT: 2 FF142+]
 
 
 /** MIXED CONTENT（混在コンテンツ） ***/
@@ -666,7 +646,8 @@ user_pref("network.IDN_show_punycode", true);
  * - この設定は、設定画面に表示される「Firefoxで表示」オプションの有効・無効を制御し、
  *   実質的にPDFをブラウザ内で開くか、外部アプリで開くか（または「毎回確認する」）を決定します
  * [理由] PDF.jsは軽量・オープンソース・安全:
- *   - 最後の脆弱性は2015年6月 [1]
+ *   過去10年間で既知の exploit は2件のみで、いずれも2024年のもの:
+ *   1件は「Severe」、もう1件は「Important」[1]
  *   - ブラウザ内で完結し、OSや他アプリと共有しない＝状態分離が保たれる
  *   - ディスク書き込みやアプリ間のデータ共有を避けられる
  * [注] ページ側が独自JSでPDFビューを強制することは可能
@@ -693,7 +674,7 @@ user_pref("browser.contentanalysis.default_result", 0);    // [FF127+] [デフ�
 
 /* 2635: コンテンツスクリプトが注入するリソースのリファラとストレージアクセスを遮断 [FF139+]
  * [高度] 互換性に影響する可能性があるためデフォルトでは無効 ***/
-   // user_pref("privacy.antitracking.isolateContentScriptResources", true);
+user_pref("privacy.antitracking.isolateContentScriptResources", true);
 
 /* 2640: CSP Level 2 レポーティングを無効化 [FF140+]
  * [注意] report-uri / report-to（CSP2）によるレポート送信を無効化します。
@@ -751,13 +732,21 @@ user_pref("extensions.postDownloadThirdPartyPrompt", false);
  * [設定] 例外を管理: オプション > プライバシーとセキュリティ > 強化型トラッキング防止 > 例外を管理 ***/
 user_pref("browser.contentblocking.category", "strict"); // [隠し設定]
 
-/* 2702: ETP の Web 互換機能（SmartBlock等）を無効化 [FF93+]
+/* 2702: ETP の Web 互換機能（SmartBlock等）を無効化 (about:compat) [FF93+]
  * [SETUP-HARDEN] スキップリスト、ヒューリスティック（SmartBlock）、自動許可機能を含む
  * リダイレクト・opener のヒューリスティックは最大30日間許可される
  * [1] https://blog.mozilla.org/security/2021/07/13/smartblock-v2/
  * [2] https://hg.mozilla.org/mozilla-central/rev/e5483fd469ab#l4.12
  * [3] https://developer.mozilla.org/docs/Web/Privacy/State_Partitioning#storage_access_heuristics ***/
    // user_pref("privacy.antitracking.enableWebcompat", false);
+
+/* 2705: ETP Strict / Custom の例外リストを設定する [FF141+]
+ [SETTING] 設定 > プライバシーとセキュリティ > 強化型トラッキング防止機能 > Strict / Custom >
+           重大な問題を修正 [baseline] | 軽微な問題を修正 [convenience]
+ [1] https://support.mozilla.org/en-US/kb/manage-enhanced-tracking-protection-exceptions
+ [2] https://etp-exceptions.mozilla.org/ ***/
+user_pref("privacy.trackingprotection.allow_list.baseline.enabled", true); // [DEFAULT: true]
+user_pref("privacy.trackingprotection.allow_list.convenience.enabled", true); // [DEFAULT: true]
 
 
 
@@ -805,7 +794,7 @@ user_pref("privacy.clearOnShutdown_v2.cookiesAndStorage", false);
 /* 2820: 手動「データを消去」で削除する項目 [SETUP-CHROME] [FF128+]
  * Firefoxは直前の選択を記憶する。この設定で毎回リセット可能
  * [設定] プライバシーとセキュリティ > Cookieとサイトデータ > データを消去 ***/
-user_pref("privacy.clearSiteData.cache", true);                             // キャッシュ
+user_pref("privacy.clearSiteData.cache", true);                             // キャッシュ [DEFAULT: true]
 user_pref("privacy.clearSiteData.cookiesAndStorage", false);               // Cookieとサイトデータ → falseのままが推奨
 user_pref("privacy.clearSiteData.historyFormDataAndDownloads", true);      // 履歴・フォーム・DL
    // user_pref("privacy.clearSiteData.siteSettings", false);              // サイト設定
@@ -852,6 +841,7 @@ user_pref("privacy.sanitize.timeSpan", 0); // すべて削除
    FPPがリモートサービスを使用するようになる予定（設定4004）。
 
    https://searchfox.org/mozilla-central/source/toolkit/components/resistfingerprinting/RFPTargetsDefault.inc
+   https://support.mozilla.org/en-US/kb/firefox-protection-against-fingerprinting#w_how-does-each-protection-work
 
    【注意】RFPTargetsと個別の上書き設定（granular overrides）は実験的な機能であり、
    予期しない挙動を示す可能性がある
@@ -1180,12 +1170,6 @@ user_pref("browser.sessionstore.resume_from_crash", true);
 /* 5020: Windowsネイティブ通知を無効化し、Firefox独自通知を使用 [FF111+] [Windows] */
    // user_pref("alerts.useSystemBackend.windows.notificationserver.enabled", false);
 
-/* 5021: ロケーションバーからの検索を無効化
- * タイポしたURLなどを勝手に検索エンジンに送信させない（例: "secretplace,com" 等）
- * 【注意】検索ボタンやキーワード検索など明示的な検索操作は影響を受けない
- */
-   // user_pref("keyword.enabled", false);
-
 
 
 /*** [SECTION 5500]: 任意設定 - HARDENING（防御強化）
@@ -1322,22 +1306,13 @@ user_pref("extensions.webcompat-reporter.enabled", false); // [デフォルト: 
  */
 user_pref("extensions.quarantinedDomains.enabled", true); // [デフォルト: true]
 
-/* 6050: prefsCleaner：Arkenfox FF128以降で削除された以前の設定項目をリセット
+/* 6050: prefsCleaner：Arkenfox FF140以降で削除された以前の設定項目をリセット
  * 【目的】古い設定ファイルに残った不要な設定を初期化するためのブロック
  */
-// user_pref("privacy.clearOnShutdown.cache", "");
-// user_pref("privacy.clearOnShutdown.cookies", "");
-// user_pref("privacy.clearOnShutdown.downloads", "");
-// user_pref("privacy.clearOnShutdown.formdata", "");
-// user_pref("privacy.clearOnShutdown.history", "");
-// user_pref("privacy.clearOnShutdown.offlineApps", "");
-// user_pref("privacy.clearOnShutdown.sessions", "");
-// user_pref("privacy.cpd.cache", "");
-// user_pref("privacy.cpd.cookies", "");
-// user_pref("privacy.cpd.formdata", "");
-// user_pref("privacy.cpd.history", "");
-// user_pref("privacy.cpd.offlineApps", "");
-// user_pref("privacy.cpd.sessions", "");
+   // user_pref("browser.display.use_system_colors", "");
+   // user_pref("browser.urlbar.fakespot.featureGate", "");
+   // user_pref("security.OCSP.enabled", "");
+   // user_pref("security.OCSP.require", "");
 
 
 
@@ -1440,8 +1415,11 @@ user_pref("extensions.quarantinedDomains.enabled", true); // [デフォルト: t
 // user_pref("extensions.systemAddon.update.url", ""); // [FF44+]
 
 /* 7015: DNT（Do Not Track）ヘッダーを有効化
- * - [WHY] ETP Strict（2701）で実効的に強制されるため補完的意味合い
- */
+ * [WHY] fingerprinting に利用され得る。FF141以降では DNT は有効化されない。
+ *       DNT は将来的に廃止予定 [1]
+   [NOTE] FF140では、DNT は Tracking Protection によって強制される。
+          Tracking Protection は ETP Strict（2701）で使用される。
+   [1] https://bugzilla.mozilla.org/1967420 ***/
 // user_pref("privacy.donottrackheader.enabled", true);
 
 /* 7016: ETP（強化型トラッキング防止）関連設定の明示
@@ -1503,12 +1481,20 @@ user_pref("privacy.trackingprotection.fingerprinting.enabled", true); // [デフ
  */
 // user_pref("privacy.globalprivacycontrol.enabled", true);
 
+/* 7022: bFPP（baselineFingerprintingProtection）[FF139+]
+ * [WHY] arkenfox は ETP Strict（2701）のみをサポートする。
+ *       ETP Strict は通常ウィンドウとプライベートウィンドウの両方で
+ *       FPP をブラウザ全体に有効化する。
+ *       bFPP と同じコンテキストで FPP が有効な場合、FPP が優先される。***/
+   // user_pref("privacy.baselineFingerprintingProtection", true);
+   // user_pref("privacy.baselineFingerprintingProtection.granularOverrides", "");
+   // user_pref("privacy.baselineFingerprintingProtection.overrides", "");
+
 
 
 /*** [SECTION 8000]: DON'T BOTHER - FINGERPRINTING
-   【理由】これらの設定は指紋対策としては効果が不十分であり、
-            むしろ副作用の方が大きい。RFPと併用することで競合が生じるため非推奨。
-   【警告】RFP（4501）が有効な環境では、これらの設定は使用しないこと
+   [WHY] これらは fingerprinting 対策として不十分であり、利益より害の方が大きい。
+   [WARNING] 使用しないこと。RFP や FPP などの組み込み保護機能と干渉する可能性がある。
 ***/
 
 /* 8001: prefsCleaner - 指紋取得対策として無意味な項目をリセット */
@@ -1622,23 +1608,14 @@ user_pref("browser.urlbar.showSearchTerms.enabled", false);
 
 /*** [SECTION 9999]: DEPRECATED / RENAMED（廃止または名称変更済みの設定） ***/
 
-/* ESR128.x では以下の設定を引き続き使用
+/* ESR140.x では以下の設定を引き続き使用
 // [注] 上の行の * をスラッシュに置き換えると、アクティブなものを再有効化できます
 
-// FF132
-// 2617: WebChannel のホワイトリストを削除
-   // [-] https://bugzilla.mozilla.org/1275612
-   // user_pref("webchannel.allowObject.urlWhitelist", "");
-
-// FF140
-// 0323: ショッピング体験機能を無効化 [FF116+]
-   // [-] https://bugzilla.mozilla.org/1964845
-   // [1] https://bugzilla.mozilla.org/show_bug.cgi?id=1840156#c0
-user_pref("browser.shopping.experience2023.enabled", false); // [デフォルト: false]
-
-// 0806: URLバーのサジェストを無効化
-   // [-] https://bugzilla.mozilla.org/1959497
-user_pref("browser.urlbar.pocket.featureGate", false); // [FF116+] [デフォルト: false]
+// FF148
+// 0603: predictor / prefetching を無効化する
+  // [-] https://bugzilla.mozilla.org/2006028
+user_pref("network.predictor.enabled", false); // [DEFAULT: false FF144+]
+user_pref("network.predictor.enable-prefetch", false); // [FF48+] [DEFAULT: false]
 // ***/
 
 
@@ -1685,11 +1662,6 @@ user_pref("signon.privateBrowsingCapture.enabled", false);
 // 但し、（8500）datareporting.policy.dataSubmissionEnabled=false のため、
 // 個別テレメトリも既に無効。一応明記。
 user_pref("datareporting.usage.uploadEnabled", false);
-
-/* [Privacy/Security] Enhanced Tracking Protection の例外
- * [PURPOSE] ETPの「ベースライン（重大な破綻回避）」例外の可否を制御し、主要なサイト機能の互換性を確保する。 */
-// Enhanced Tracking Protection（ETP）のベースライン許可リストを有効化（重大なサイト破綻を避けるための限定的な例外を適用）
-user_pref("privacy.trackingprotection.allow_list.baseline.enabled", true);
 
 /* [Security] HTTPS-Only モードのエラーページ提案表示
  * 【目的】HTTPS-Only の接続失敗時、エラーページで代替案（例：www 付き等）の提案を表示して復帰しやすくする。 */
