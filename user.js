@@ -5,8 +5,8 @@
  *****************************************************************************************
  *
  * [ Project ]    Haganefox
- * [ Version ]    1.6.2
- * [ Updated ]    2026-03-12
+ * [ Version ]    1.6.3
+ * [ Updated ]    2026-05-24
  * [ Repository ] https://github.com/koyasi777/haganefox
  * [ License ]    MIT License
  *
@@ -34,7 +34,7 @@
  *****************************************************************************************
  *
  * [ References ]
- * arkenfox user.js (v140)
+ * arkenfox user.js (v144)
  * https://github.com/arkenfox/user.js
  * 
  * Betterfox (v148)   
@@ -156,10 +156,14 @@ user_pref("network.connectivity-service.enabled", false);
    Firefox takes measures such as stripping out identifying parameters and since SBv4 (FF57+)
    doesn't even use cookies. (#Turn on browser.safebrowsing.debug to monitor this activity)
 
+   FF147+ uses SBv5 which incorporates Oblivous HTTP [5] and SBv5's local list mode [6]
+
    [1] https://feeding.cloud.geek.nz/posts/how-safe-browsing-works-in-firefox/
    [2] https://wiki.mozilla.org/Security/Safe_Browsing
    [3] https://support.mozilla.org/kb/how-does-phishing-and-malware-protection-work
    [4] https://educatedguesswork.org/posts/safe-browsing-privacy/
+   [5] https://developers.google.com/safe-browsing/reference
+   [6] https://developers.google.com/safe-browsing/reference/Local.List.Mode
 ***/
 
 /* 0401: disable SB (Safe Browsing)
@@ -203,10 +207,6 @@ user_pref("network.prefetch-next", false);
  * [1] https://developer.mozilla.org/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control ***/
 user_pref("network.dns.disablePrefetch", true);
 user_pref("network.dns.disablePrefetchFromHTTPS", true);
-
-/* 0603: disable predictor / prefetching ***/
-user_pref("network.predictor.enabled", false);
-user_pref("network.predictor.enable-prefetch", false); // [FF48+] [DEFAULT: false]
 
 /* 0604: disable link-mouseover opening connection to linked server
  * [1] https://news.slashdot.org/story/15/08/14/2321202/how-to-quash-firefoxs-silent-requests ***/
@@ -302,11 +302,13 @@ user_pref("browser.urlbar.trending.featureGate", false);
 /* 0806: disable urlbar suggestions ***/
 user_pref("browser.urlbar.addons.featureGate", false);         // addons [FF115+]
 user_pref("browser.urlbar.amp.featureGate", false);           // [FF141+] adMarketplace
-user_pref("browser.urlbar.fakespot.featureGate", false);       // Fakespot [FF130+] [DEFAULT: false]
+user_pref("browser.urlbar.importantDates.featureGate", false); // [FF143+]
+user_pref("browser.urlbar.market.featureGate", false); // [FF143+] stock market
 user_pref("browser.urlbar.mdn.featureGate", false);           // MDN [FF117+]
 user_pref("browser.urlbar.weather.featureGate", false);       // [FF108+]
 user_pref("browser.urlbar.wikipedia.featureGate", false);     // [FF141+]
 user_pref("browser.urlbar.yelp.featureGate", false);           // Yelp [FF124+]
+user_pref("browser.urlbar.yelpRealtime.featureGate", false); // [FF144+]
 
 /* 0807: disable urlbar clipboard suggestions [FF118+] ***/
    // user_pref("browser.urlbar.clipboard.featureGate", false);
@@ -348,7 +350,7 @@ user_pref("browser.search.separatePrivateDefault.ui.enabled", true); // [FF71+]
 
 
 
-/*** [SECTION 0900]: PASSWORDS
+/*** [SECTION 0900]: PASSWORDS / PASSKEYS
    [1] https://support.mozilla.org/kb/use-primary-password-protect-stored-logins-and-pas
 ***/
 
@@ -379,7 +381,9 @@ user_pref("network.auth.subresource-http-auth-allow", 1);
  * On macOS, SSO only works on corporate devices ***/
    // user_pref("network.http.microsoft-entra-sso.enabled", false); // [DEFAULT: false]
 
-
+/* 0910: enforce no direct attestation in passkeys [FF144+]
+   // [1] https://bugzilla.mozilla.org/show_bug.cgi?id=1981587 ***/
+user_pref("security.webauthn.always_allow_direct_attestation", false); // [DEFAULT: false]
 
 /*** [SECTION 1000]: DISK AVOIDANCE ***/
 
@@ -427,7 +431,7 @@ user_pref("browser.sessionstore.privacy_level", 2);
  * but the problem is that the browser can't know that. Setting this pref to true is the only way for the
  * browser to ensure there will be no unsafe renegotiations on the channel between the browser and the server
  * [SETUP-WEB] SSL_ERROR_UNSAFE_NEGOTIATION: is it worth overriding this for that one site?
- * [STATS] SSL Labs (May 2024) reports over 99.7% of top sites have secure renegotiation [4]
+ * [STATS] SSL Labs (Nov 2025) reports almost 99.85% of top sites have secure renegotiation [4]
  * [1] https://wiki.mozilla.org/Security:Renegotiation
  * [2] https://datatracker.ietf.org/doc/html/rfc5746
  * [3] https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-3555
@@ -443,32 +447,6 @@ user_pref("security.ssl.require_safe_negotiation", true);
 user_pref("security.tls.enable_0rtt_data", false);
 
 
-/** OCSP (Online Certificate Status Protocol)
-   [1] https://scotthelme.co.uk/revocation-is-broken/
-   [2] https://blog.mozilla.org/security/2013/07/29/ocsp-stapling-in-firefox/
-***/
-
-/* 1211: enforce OCSP fetching to confirm current validity of certificates
- * 0=disabled, 1=enabled (default), 2=enabled for EV certificates only
- * OCSP (non-stapled) leaks information about the sites you visit to the CA (cert authority)
- * It's a trade-off between security (checking) and privacy (leaking info to the CA)
- * [NOTE] This pref only controls OCSP fetching and does not affect OCSP stapling
- * [SETTING] Privacy & Security>Security>Certificates>Query OCSP responder servers...
- * [1] https://en.wikipedia.org/wiki/Ocsp ***/
-user_pref("security.OCSP.enabled", 1); // [DEFAULT: 1]
-
-/* 1212: set OCSP fetch failures (non-stapled, see 1211) to hard-fail
- * [SETUP-WEB] SEC_ERROR_OCSP_SERVER_ERROR | SEC_ERROR_OCSP_UNAUTHORIZED_REQUEST
- * When a CA cannot be reached to validate a cert, Firefox just continues the connection (=soft-fail)
- * Setting this pref to true tells Firefox to instead terminate the connection (=hard-fail)
- * It is pointless to soft-fail when an OCSP fetch fails: you cannot confirm a cert is still valid (it
- * could have been revoked) and/or you could be under attack (e.g. malicious blocking of OCSP servers)
- * [1] https://blog.mozilla.org/security/2013/07/29/ocsp-stapling-in-firefox/
- * [2] https://www.imperialviolet.org/2014/04/19/revchecking.html
- * [3] https://letsencrypt.org/2024/12/05/ending-ocsp/ ***/
-user_pref("security.OCSP.require", true);
-
-
 /** CERTS / HPKP (HTTP Public Key Pinning) ***/
 
 /* 1223: enable strict PKP (Public Key Pinning)
@@ -482,9 +460,10 @@ user_pref("security.cert_pinning.enforcement_level", 2);
  * 2 = consult CRLite and enforce both "Revoked" and "Not Revoked" results
  * 3 = consult CRLite and enforce "Not Revoked" results, but defer to OCSP for "Revoked" (default)
  * [1] https://bugzilla.mozilla.org/buglist.cgi?bug_id=1429800,1670985,1753071
- * [2] https://blog.mozilla.org/security/tag/crlite/ ***/
-user_pref("security.remote_settings.crlite_filters.enabled", true); // [DEFAULT: true FF137+]
-user_pref("security.pki.crlite_mode", 2);
+ * [2] https://blog.mozilla.org/security/tag/crlite/
+ * [3] https://hacks.mozilla.org/2025/08/crlite-fast-private-and-comprehensive-certificate-revocation-checking-in-firefox/ ***/
+user_pref("security.remote_settings.crlite_filters.enabled", true); // [DEFAULT: true]
+user_pref("security.pki.crlite_mode", 2); // [DEFAULT: 2 FF142+]
 
 
 /** MIXED CONTENT ***/
@@ -628,7 +607,8 @@ user_pref("network.IDN_show_punycode", true);
 /* 2620: enforce PDFJS, disable PDFJS scripting
  * This setting controls if the option "Display in Firefox" is available in the setting below
  *   and by effect controls whether PDFs are handled in-browser or externally ("Ask" or "Open With")
- * [WHY] pdfjs is lightweight, open source, and secure: the last exploit was June 2015 [1]
+ * [WHY] pdfjs is lightweight, open source, and secure: In the last 10 years it has only had
+ *   two known exploits, both in 2024: one 'Severe' and one 'Important' [1]
  *   It doesn't break "state separation" of browser content (by not sharing with OS, independent apps).
  *   It maintains disk avoidance and application data isolation. It's convenient. You can still save to disk.
  * [NOTE] JS can still force a pdf to open in-browser by bundling its own code
@@ -650,7 +630,7 @@ user_pref("browser.contentanalysis.enabled", false); // [FF121+] [DEFAULT: false
 user_pref("browser.contentanalysis.default_result", 0); // [FF127+] [DEFAULT: 0]
 
 /* 2635: disable referrer and storage access for resources injected by content scripts [FF139+] ***/
-   // user_pref("privacy.antitracking.isolateContentScriptResources", true);
+user_pref("privacy.antitracking.isolateContentScriptResources", true);
 
 /* 2640: disable CSP Level 2 Reporting [FF140+] ***/
 user_pref("security.csp.reporting.enabled", false);
@@ -705,7 +685,7 @@ user_pref("extensions.postDownloadThirdPartyPrompt", false);
  * [SETTING] to manage site exceptions: Options>Privacy & Security>Enhanced Tracking Protection>Manage Exceptions ***/
 user_pref("browser.contentblocking.category", "strict"); // [HIDDEN PREF]
 
-/* 2702: disable ETP web compat features [FF93+]
+/* 2702: disable ETP web compat features (about:compat) [FF93+]
  * [SETUP-HARDEN] Includes skip lists, heuristics (SmartBlock) and automatic grants
  * Opener and redirect heuristics are granted for 30 days, see [3]
  * [1] https://blog.mozilla.org/security/2021/07/13/smartblock-v2/
@@ -713,6 +693,12 @@ user_pref("browser.contentblocking.category", "strict"); // [HIDDEN PREF]
  * [3] https://developer.mozilla.org/docs/Web/Privacy/State_Partitioning#storage_access_heuristics ***/
    // user_pref("privacy.antitracking.enableWebcompat", false);
 
+/* 2705: set ETP Strict/Custom exception lists (FF141+)
+ [SETTING] Options>Privacy & Security>Enhanced Tracking Protection>Strict/Custom>Fix major [baseline] | minor [convenience]
+ [1] https://support.mozilla.org/en-US/kb/manage-enhanced-tracking-protection-exceptions
+ [2] https://etp-exceptions.mozilla.org/ ***/
+user_pref("privacy.trackingprotection.allow_list.baseline.enabled", true); // [DEFAULT: true]
+user_pref("privacy.trackingprotection.allow_list.convenience.enabled", true); // [DEFAULT: true]
 
 
 /*** [SECTION 2800]: SHUTDOWN & SANITIZING ***/
@@ -757,7 +743,7 @@ user_pref("privacy.clearOnShutdown_v2.cookiesAndStorage", false);
 /* 2820: set manual "Clear Data" items [SETUP-CHROME] [FF128+]
  * Firefox remembers your last choices. This will reset them when you start Firefox
  * [SETTING] Privacy & Security>Browser Privacy>Cookies and Site Data>Clear Data ***/
-user_pref("privacy.clearSiteData.cache", true);
+user_pref("privacy.clearSiteData.cache", true); // [DEFAULT: true]
 user_pref("privacy.clearSiteData.cookiesAndStorage", false); // keep false until it respects "allow" site exceptions
 user_pref("privacy.clearSiteData.historyFormDataAndDownloads", true);
    // user_pref("privacy.clearSiteData.siteSettings", false);
@@ -801,6 +787,7 @@ user_pref("privacy.sanitize.timeSpan", 0);
    on a per site basis for compatibility (4004).
 
    https://searchfox.org/mozilla-central/source/toolkit/components/resistfingerprinting/RFPTargetsDefault.inc
+   https://support.mozilla.org/en-US/kb/firefox-protection-against-fingerprinting#w_how-does-each-protection-work
 
    [NOTE] RFPTargets + granular overrides are somewhat experimental and may produce unexpected results
    - e.g. FrameRate can only be controlled per process, not per origin
@@ -1088,13 +1075,6 @@ user_pref("browser.sessionstore.resume_from_crash", true);
 /* 5020: disable Windows native notifications and use app notifications instead [FF111+] [WINDOWS] ***/
    // user_pref("alerts.useSystemBackend.windows.notificationserver.enabled", false);
 
-/* 5021: disable location bar using search
- * Don't leak URL typos to a search engine, give an error message instead
- * Examples: "secretplace,com", "secretplace/com", "secretplace com", "secret place.com"
- * [NOTE] This does not affect explicit user action such as using search buttons in the
- * dropdown, or using keyword search shortcuts you configure in options (e.g. "d" for DuckDuckGo) ***/
-   // user_pref("keyword.enabled", false);
-
 
 
 /*** [SECTION 5500]: OPTIONAL HARDENING
@@ -1210,20 +1190,11 @@ user_pref("extensions.webcompat-reporter.enabled", false); // [DEFAULT: false]
  * [WHY] https://support.mozilla.org/kb/quarantined-domains ***/
 user_pref("extensions.quarantinedDomains.enabled", true); // [DEFAULT: true]
 
-/* 6050: prefsCleaner: reset previously active items removed from arkenfox FF128+ ***/
-// user_pref("privacy.clearOnShutdown.cache", "");
-// user_pref("privacy.clearOnShutdown.cookies", "");
-// user_pref("privacy.clearOnShutdown.downloads", "");
-// user_pref("privacy.clearOnShutdown.formdata", "");
-// user_pref("privacy.clearOnShutdown.history", "");
-// user_pref("privacy.clearOnShutdown.offlineApps", "");
-// user_pref("privacy.clearOnShutdown.sessions", "");
-// user_pref("privacy.cpd.cache", "");
-// user_pref("privacy.cpd.cookies", "");
-// user_pref("privacy.cpd.formdata", "");
-// user_pref("privacy.cpd.history", "");
-// user_pref("privacy.cpd.offlineApps", "");
-// user_pref("privacy.cpd.sessions", "");
+/* 6050: prefsCleaner: reset previously active items removed from arkenfox FF140+ ***/
+   // user_pref("browser.display.use_system_colors", "");
+   // user_pref("browser.urlbar.fakespot.featureGate", "");
+   // user_pref("security.OCSP.enabled", "");
+   // user_pref("security.OCSP.require", "");
 
 
 
@@ -1308,7 +1279,9 @@ user_pref("extensions.quarantinedDomains.enabled", true); // [DEFAULT: true]
 // user_pref("extensions.systemAddon.update.url", ""); // [FF44+]
 
 /* 7015: enable the DNT (Do Not Track) HTTP header
- * [WHY] DNT is enforced with Tracking Protection which is used in ETP Strict (2701) ***/
+ * [WHY] Fingerprintable. In FF141+ DNT is never enabled. DNT is slated for deprecation [1]
+   [NOTE] In FF140, DNT is enforced with Tracking Protection which is used in ETP Strict (2701)
+   [1] https://bugzilla.mozilla.org/1967420 ***/
 // user_pref("privacy.donottrackheader.enabled", true);
 
 /* 7016: explicit declaration of ETP (Enhanced Tracking Protection) related prefs
@@ -1365,11 +1338,17 @@ user_pref("privacy.trackingprotection.fingerprinting.enabled", true); // [DEFAUL
  * in ETP Strict (2701) and sanitizing on close (2800s) ***/
 // user_pref("privacy.globalprivacycontrol.enabled", true);
 
+/* 7022: bFPP (baselineFingerprintingProtection) [FF139+]
+ * [WHY] Arkenfox only supports ETP Strict (2701) which enables FPP browser-wide (normal and private
+ * browsing window contexts). If FPP is enabled in the same context as bFPP, FPP takes precedence ***/
+   // user_pref("privacy.baselineFingerprintingProtection", true);
+   // user_pref("privacy.baselineFingerprintingProtection.granularOverrides", "");
+   // user_pref("privacy.baselineFingerprintingProtection.overrides", "");
 
 
 /*** [SECTION 8000]: DON'T BOTHER: FINGERPRINTING
-   [WHY] They are insufficient to help anti-fingerprinting and do more harm than good
-   [WARNING] DO NOT USE with RFP. RFP already covers these and they can interfere
+   [WHY] They are insufficient for fingerprinting protection and do more harm than good
+   [WARNING] DO NOT USE: they can interfere with built-in solutions such as RFP and FPP
 ***/
 
 /* 8001: prefsCleaner: reset items useless for anti-fingerprinting ***/
@@ -1430,7 +1409,7 @@ user_pref("datareporting.policy.dataSubmissionEnabled", false);
  * [SETTING] Privacy & Security>Firefox Data Collection and Use>Send technical... data ***/
 user_pref("datareporting.healthreport.uploadEnabled", false);
 
-/* 0802: disable telemetry
+/* 8502: disable telemetry
  * The "unified" pref affects the behavior of the "enabled" pref
  * - If "unified" is false then "enabled" controls the telemetry module
  * - If "unified" is true then "enabled" only controls whether to record extended data
@@ -1472,20 +1451,13 @@ user_pref("browser.urlbar.showSearchTerms.enabled", false);
 
 /*** [SECTION 9999]: DEPRECATED / RENAMED ***/
 
-/* ESR128.x still uses all the following prefs
+/* ESR140.x still uses all the following prefs
 // [NOTE] replace the * with a slash in the line above to re-enable active ones
-// FF132
-// 2617: remove webchannel whitelist
-   // [-] https://bugzilla.mozilla.org/1275612
-   // user_pref("webchannel.allowObject.urlWhitelist", "");
-// FF140
-// 0323: disable shopping experience [FF116+]
-   // [-] https://bugzilla.mozilla.org/1964845
-   // [1] https://bugzilla.mozilla.org/show_bug.cgi?id=1840156#c0
-user_pref("browser.shopping.experience2023.enabled", false); // [DEFAULT: false]
-// 0806: disable urlbar suggestions
-   // [-] https://bugzilla.mozilla.org/1959497
-user_pref("browser.urlbar.pocket.featureGate", false); // [FF116+] [DEFAULT: false]
+// FF148
+// 0603: disable predictor / prefetching
+  // [-] https://bugzilla.mozilla.org/2006028
+user_pref("network.predictor.enabled", false); // [DEFAULT: false FF144+]
+user_pref("network.predictor.enable-prefetch", false); // [FF48+] [DEFAULT: false]
 // ***/
 
 
@@ -1537,10 +1509,6 @@ user_pref("signon.privateBrowsingCapture.enabled", false);
 // Disable upload of usage telemetry.
 // Note: This is redundant if datareporting.policy.dataSubmissionEnabled=false (see 8500), but included for clarity.
 user_pref("datareporting.usage.uploadEnabled", false);
-
-/* [Privacy/Security] Enhanced Tracking Protection exceptions
- * [PURPOSE] Control ETP’s built-in allow-lists that preserve core site functionality. */
-user_pref("privacy.trackingprotection.allow_list.baseline.enabled", true); // Enable “baseline” web-compatibility exceptions so essential site features keep working (convenience tier is separate)
 
 /* [Security] HTTPS-Only mode error-page UX
  * [PURPOSE] Offer user suggestions on the HTTPS-Only error page (e.g., alternative hostnames like www). */
