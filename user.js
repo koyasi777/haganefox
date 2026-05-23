@@ -5,7 +5,7 @@
  *****************************************************************************************
  *
  * [ Project ]    Haganefox
- * [ Version ]    1.6.3
+ * [ Version ]    1.6.4
  * [ Updated ]    2026-05-24
  * [ Repository ] https://github.com/koyasi777/haganefox
  * [ License ]    MIT License
@@ -37,7 +37,7 @@
  * arkenfox user.js (v144)
  * https://github.com/arkenfox/user.js
  * 
- * Betterfox (v148)   
+ * Betterfox (v149)   
  * https://github.com/yokoffing/Betterfox
  *
  ****************************************************************************************/
@@ -1487,7 +1487,6 @@ user_pref("full-screen-api.warning.timeout", 0);
  * [SOURCE] Betterfox (Securefox/Peskyfox baseline)
  * [NOTE] All manual memory/cache overrides have been removed to favor Gecko's native dynamic memory management. Safely applicable to standard environments. */
 user_pref("gfx.canvas.accelerated.cache-size", 256); // Reset pref to mitigate specific rendering glitches (Ref: Betterfox #460)
-user_pref("gfx.webrender.layer-compositor", true);   // Enable WebRender layer compositor for GPU offloading
 
 /* [UI/UX] Enhance usability and interface interaction
  * [PURPOSE] Refine right-click behavior, form interaction, search UI, clipboard, PDF handling, etc.
